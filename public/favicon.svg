@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- House body -->
+  <path d="M6 14L16 6L26 14V26C26 26.5304 25.7893 27.0391 25.4142 27.4142C25.0391 27.7893 24.5304 28 24 28H8C7.46957 28 6.96086 27.7893 6.58579 27.4142C6.21071 27.0391 6 26.5304 6 26V14Z" fill="#2563eb" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Door -->
+  <path d="M12 28V18H20V28" fill="#1e40af" stroke="#1e40af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Roof -->
+  <path d="M2 16L16 4L30 16" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
