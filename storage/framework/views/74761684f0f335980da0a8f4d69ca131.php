@@ -9,15 +9,10 @@
 <?php $__env->startSection('content'); ?>
 
 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($heroSection): ?>
-<section class="bg-white pt-24 pb-12 lg:pt-24 lg:pb-8 relative overflow-hidden lg:h-[calc(100vh-80px)] flex flex-col justify-center">
+<section class="bg-white pt-28 pb-16 lg:pt-32 lg:pb-16 relative overflow-hidden lg:min-h-[calc(100vh-80px)] flex flex-col justify-center">
     <!-- Top Text Content -->
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 lg:mb-10" data-scroll="fade-up">
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($heroSection->tagline): ?>
-        <span class="inline-block text-xs text-primary-600 font-semibold tracking-widest uppercase bg-primary-50 px-4 py-1.5 rounded-full mb-6">
-            <?php echo e($heroSection->tagline); ?>
-
-        </span>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        
         
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-['Raleway'] font-bold text-gray-900 leading-tight tracking-tight mb-6">
             <?php echo e($heroSection->title); ?>
@@ -74,14 +69,20 @@
             <!-- Avatars -->
             <div class="flex items-center gap-4 mb-6">
                 <div class="flex -space-x-4">
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-200 overflow-hidden shadow-sm">
-                        <img src="https://ui-avatars.com/api/?name=User+A&background=random" alt="User" class="w-full h-full object-cover">
+                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-100 flex items-center justify-center shadow-sm">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                        </svg>
                     </div>
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-300 overflow-hidden shadow-sm">
-                        <img src="https://ui-avatars.com/api/?name=User+B&background=random" alt="User" class="w-full h-full object-cover">
+                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-200 flex items-center justify-center shadow-sm">
+                        <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                        </svg>
                     </div>
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-400 overflow-hidden shadow-sm">
-                        <img src="https://ui-avatars.com/api/?name=User+C&background=random" alt="User" class="w-full h-full object-cover">
+                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-300 flex items-center justify-center shadow-sm">
+                        <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                        </svg>
                     </div>
                 </div>
                 <div class="w-10 h-10 border border-gray-200 rounded-full flex justify-center items-center text-gray-400 hover:bg-gray-50 cursor-pointer transition">
@@ -92,12 +93,7 @@
             </div>
             
             <!-- Rating -->
-            <div class="flex items-center gap-2">
-                <div class="text-yellow-400">
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                </div>
-                <span class="font-bold text-gray-900 text-lg">4.5 Stars</span>
-            </div>
+            
         </div>
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
