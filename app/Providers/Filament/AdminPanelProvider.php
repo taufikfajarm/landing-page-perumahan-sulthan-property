@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('dashboard')
             ->login()
+            ->brandName('Sulthan Property')
             ->colors([
                 'primary' => Color::Amber,
             ])
