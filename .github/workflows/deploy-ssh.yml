@@ -19,7 +19,13 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
+            set -e
             cd ${{ secrets.SSH_TARGET_DIR }}
+            
+            # Print environment info
+            echo "=== Node/NPM Version Check ==="
+            node -v || echo "Node.js not found!"
+            npm -v || echo "NPM not found!"
             
             # Fetch latest changes
             git pull origin main
