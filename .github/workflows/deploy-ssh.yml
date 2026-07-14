@@ -1,4 +1,4 @@
-name: Deploy via SSH (Git Pull on Server)
+name: Deploy via SSH (Build on GitHub, Extract on Server)
 
 on:
   push:
@@ -7,10 +7,49 @@ on:
 
 jobs:
   deploy:
-    name: 🚀 Deploy via SSH
+    name: 🚀 Build & Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🔑 Execute remote SSH commands
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, hash, libxml, openssl
+          coverage: none
+
+      - name: 📦 Install Composer Dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: ⚡ Install NPM Dependencies & Build Assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: 📦 Archive release files
+        run: |
+          zip -r deploy.zip . -x "node_modules/*" ".git/*" ".github/*" "tests/*"
+
+      - name: 📁 Copy archive to server via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "deploy.zip"
+          target: ${{ secrets.SSH_TARGET_DIR }}
+
+      - name: 🔑 Extract archive & Run Laravel commands via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -19,23 +58,11 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            set -e
             cd ${{ secrets.SSH_TARGET_DIR }}
             
-            # Print environment info
-            echo "=== Node/NPM Version Check ==="
-            node -v || echo "Node.js not found!"
-            npm -v || echo "NPM not found!"
-            
-            # Fetch latest changes
-            git pull origin main
-            
-            # Install production dependencies
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-            
-            # Build frontend assets (Requires Node/NPM to be installed on server)
-            npm install
-            npm run build
+            # Extract deployment package
+            unzip -o deploy.zip
+            rm deploy.zip
             
             # Run migrations (Force because we are in production)
             php artisan migrate --force
