@@ -11,9 +11,6 @@ use App\Http\Controllers\WhatsAppClickController;
 use App\Http\Controllers\SitemapController;
 
 // GitHub Actions Auto-Deploy Test
-Route::get('/debug-manifest', function () {
-    return response()->json(json_decode(@file_get_contents(public_path('build/manifest.json')), true));
-});
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
