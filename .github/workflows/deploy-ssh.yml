@@ -1,0 +1,40 @@
+name: Deploy via SSH (Git Pull on Server)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🚀 Deploy via SSH
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔑 Execute remote SSH commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.SSH_TARGET_DIR }}
+            
+            # Fetch latest changes
+            git pull origin main
+            
+            # Install production dependencies
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            
+            # Build frontend assets (Requires Node/NPM to be installed on server)
+            npm install
+            npm run build
+            
+            # Run migrations (Force because we are in production)
+            php artisan migrate --force
+            
+            # Clear and optimize configuration caches
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan optimize

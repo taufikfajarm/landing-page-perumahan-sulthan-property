@@ -9,100 +9,108 @@
 @section('content')
 {{-- Hero Section --}}
 @if($heroSection)
-<section class="bg-white pt-28 pb-16 lg:pt-32 lg:pb-16 relative overflow-hidden lg:min-h-[calc(100vh-80px)] flex flex-col justify-center">
-    <!-- Top Text Content -->
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 lg:mb-10" data-scroll="fade-up">
-        {{-- @if($heroSection->tagline)
-        <span class="inline-block text-xs text-primary-600 font-semibold tracking-widest uppercase bg-primary-50 px-4 py-1.5 rounded-full mb-6">
-            {{ $heroSection->tagline }}
-        </span>
-        @endif --}}
-        
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-['Raleway'] font-bold text-gray-900 leading-tight tracking-tight mb-6">
-            {{ $heroSection->title }}
-        </h1>
-        
-        <p class="text-lg md:text-xl text-gray-500 leading-relaxed max-w-4xl mx-auto">
-            {{ $heroSection->description }}
-        </p>
-        
-        <div class="pt-6 lg:pt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="{{ route('marketing.index') }}" class="inline-block bg-primary-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-primary-600/30">
-                Hubungi Kami
-            </a>
-            <a href="#contact-form" class="inline-block bg-white text-gray-800 px-8 py-3.5 rounded-full font-semibold border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition shadow-sm">
-                Dapatkan E-brosur
-            </a>
-        </div>
-    </div>
+<section class="bg-white pt-8 pb-10 lg:pt-12 lg:pb-14 relative overflow-hidden lg:min-h-[calc(100vh-64px)] flex items-center">
+    <!-- Background Blob Elements -->
+    <div class="absolute top-10 left-10 w-72 h-72 bg-primary-100 rounded-full mix-blend-multiply filter blur-[96px] opacity-40 pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-orange-100 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 pointer-events-none"></div>
 
-    <!-- Bottom Slider Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full" data-scroll="fade-up" data-scroll-delay="200">
-        @if($heroSection->images->count() > 0)
-        <!-- Main Image Container -->
-        <div class="relative w-full aspect-[4/3] lg:aspect-auto lg:h-[42vh] xl:h-[48vh] rounded-[2rem] overflow-hidden shadow-2xl bg-gray-100">
-            <div class="swiper hero-swiper h-full w-full">
-                <div class="swiper-wrapper">
-                    @foreach($heroSection->images as $image)
-                    <div class="swiper-slide">
-                        <img src="{{ get_image_url($image->image_path) }}" alt="{{ $heroSection->title }}" class="w-full h-full object-cover">
-                    </div>
-                    @endforeach
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-16 items-center">
+            
+            <!-- Left Content: Text & CTAs -->
+            <div class="lg:col-span-6 text-center lg:text-left" data-scroll="fade-right">
+                @if($heroSection->tagline)
+                <span class="inline-block text-xs text-primary-600 font-semibold tracking-widest uppercase bg-primary-50 px-4 py-1.5 rounded-full mb-4">
+                    {{ $heroSection->tagline }}
+                </span>
+                @else
+                <span class="inline-block text-xs text-primary-600 font-semibold tracking-widest uppercase bg-primary-50 px-4 py-1.5 rounded-full mb-4">
+                    Developer Properti Terpercaya
+                </span>
+                @endif
+                
+                <h1 class="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-['Raleway'] font-bold text-gray-900 leading-tight tracking-tight mb-4">
+                    {{ $heroSection->title }}
+                </h1>
+                
+                <p class="text-base md:text-lg text-gray-500 leading-relaxed max-w-xl mx-auto lg:mx-0 mb-6">
+                    {{ $heroSection->description }}
+                </p>
+                
+                <div class="flex flex-row flex-wrap justify-center lg:justify-start items-center gap-3">
+                    <a href="{{ route('marketing.index') }}" class="inline-block bg-primary-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-primary-600/30 text-sm md:text-base">
+                        Hubungi Kami
+                    </a>
+                    <a href="#contact-form" class="inline-block bg-white text-gray-800 px-6 py-3 rounded-full font-semibold border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition shadow-sm text-sm md:text-base">
+                        Dapatkan E-brosur
+                    </a>
                 </div>
-                @if($heroSection->images->count() > 1)
-                <!-- Pagination -->
-                <div class="swiper-pagination !bottom-6"></div>
+            </div>
+
+            <!-- Right Content: Slider & Stats -->
+            <div class="lg:col-span-6 relative w-full mt-10 lg:mt-0" data-scroll="fade-left" data-scroll-delay="200">
+                @if($heroSection->images->count() > 0)
+                <div class="relative pr-4 pb-4">
+                    <!-- Main Image Container -->
+                    <div class="relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl bg-gray-100 border border-gray-100">
+                        <div class="swiper hero-swiper h-full w-full">
+                            <div class="swiper-wrapper">
+                                @foreach($heroSection->images as $image)
+                                <div class="swiper-slide">
+                                    <img src="{{ get_image_url($image->image_path) }}" alt="{{ $heroSection->title }}" class="w-full h-full object-cover">
+                                </div>
+                                @endforeach
+                            </div>
+                            @if($heroSection->images->count() > 1)
+                            <!-- Pagination -->
+                            <div class="swiper-pagination !bottom-6"></div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Floating Stats Card (Referencing provided image) -->
+                    <div class="hidden sm:block absolute -right-4 -bottom-6 bg-white p-6 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.12)] border border-gray-50 z-10 w-72" data-scroll="zoom-in" data-scroll-delay="500">
+                        <!-- Top Right Arrow Icon Container -->
+                        <div class="absolute -top-4 -right-4 w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary-600/40 cursor-pointer hover:scale-105 transition transform">
+                            <svg class="w-6 h-6 transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                            </svg>
+                        </div>
+                        
+                        <h3 class="text-3xl font-extrabold text-gray-900 mb-1">200+</h3>
+                        <p class="text-sm font-semibold text-gray-500 mb-4">Unit Terjual</p>
+                        
+                        <!-- Avatars -->
+                        <div class="flex items-center gap-4">
+                            <div class="flex -space-x-3">
+                                <div class="w-10 h-10 rounded-full border-[2.5px] border-white bg-gray-100 flex items-center justify-center shadow-sm">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="w-10 h-10 rounded-full border-[2.5px] border-white bg-gray-200 flex items-center justify-center shadow-sm">
+                                    <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="w-10 h-10 rounded-full border-[2.5px] border-white bg-gray-300 flex items-center justify-center shadow-sm">
+                                    <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 border border-gray-200 rounded-full flex justify-center items-center text-gray-400 hover:bg-gray-50 cursor-pointer transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @endif
             </div>
-        </div>
 
-        <!-- Floating Stats Card (Referencing provided image) -->
-        <div class="hidden lg:block absolute -right-6 -bottom-12 bg-white p-8 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.12)] border border-gray-50 z-10 w-80" data-scroll="zoom-in" data-scroll-delay="500">
-            <!-- Top Right Arrow Icon Container -->
-            <div class="absolute -top-4 -right-4 w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary-600/40 cursor-pointer hover:scale-105 transition transform">
-                <svg class="w-6 h-6 transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                </svg>
-            </div>
-            
-            <h3 class="text-4xl font-extrabold text-gray-900 mb-1">200+</h3>
-            <p class="text-sm font-semibold text-gray-500 mb-6">Unit Terjual</p>
-            
-            <!-- Avatars -->
-            <div class="flex items-center gap-4 mb-6">
-                <div class="flex -space-x-4">
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-100 flex items-center justify-center shadow-sm">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-200 flex items-center justify-center shadow-sm">
-                        <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="w-12 h-12 rounded-full border-[3px] border-white bg-gray-300 flex items-center justify-center shadow-sm">
-                        <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="w-10 h-10 border border-gray-200 rounded-full flex justify-center items-center text-gray-400 hover:bg-gray-50 cursor-pointer transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Rating -->
-            {{-- <div class="flex items-center gap-2">
-                <div class="text-yellow-400">
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                </div>
-                <span class="font-bold text-gray-900 text-lg">4.5 Stars</span>
-            </div> --}}
         </div>
-        @endif
     </div>
 </section>
 @endif
@@ -192,7 +200,7 @@
 
         @if($featuredHousings->count() > 0)
         <div class="text-center mt-12">
-            <a href="{{ route('housing.index') }}" class="inline-block bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition">
+            <a href="{{ route('housing.index') }}" class="inline-block bg-primary-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-primary-600/30">
                 Lihat Semua Perumahan
             </a>
         </div>
@@ -389,7 +397,7 @@
 @if($recentBlogs->count() > 0)
 <section class="py-20 bg-white relative overflow-hidden">
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary-50 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-12" data-scroll="fade-up">
             <h2 class="text-3xl md:text-4xl font-['Raleway'] font-bold text-gray-900 mb-4">Artikel Terbaru</h2>
             <p class="text-gray-800 text-lg">Informasi dan tips seputar properti</p>
@@ -437,7 +445,7 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="{{ route('blog.index') }}" class="inline-block bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition">
+            <a href="{{ route('blog.index') }}" class="inline-block bg-primary-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-primary-700 transition shadow-lg hover:shadow-primary-600/30">
                 Lihat Semua Artikel
             </a>
         </div>
