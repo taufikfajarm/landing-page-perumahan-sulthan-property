@@ -10,6 +10,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\WhatsAppClickController;
 use App\Http\Controllers\SitemapController;
 
+// GitHub Actions Auto-Deploy Test
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
