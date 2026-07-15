@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 el: '.swiper-pagination',
                 clickable: true,
             },
+            observer: true,
+            observeParents: true,
         });
     }
 
@@ -47,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             slidesPerView: 1,
             spaceBetween: 30,
+            observer: true,
+            observeParents: true,
         });
     }
 
@@ -65,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             spaceBetween: 16,
             allowTouchMove: true,
             freeMode: true,
+            observer: true,
+            observeParents: true,
             breakpoints: {
                 640: {
                     slidesPerView: 3,
