@@ -59,6 +59,8 @@ class AboutSettingForm
                     ->disk('public')
                     ->directory('office')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000')
                     ->columnSpanFull(),
                 
                 TextInput::make('office_address')

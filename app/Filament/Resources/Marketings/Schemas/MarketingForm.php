@@ -24,6 +24,8 @@ class MarketingForm
                     ->maxSize(2048)
                     ->directory('marketing')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('300')
                     ->avatar()
                     ->columnSpanFull(),
                 TextInput::make('phone')

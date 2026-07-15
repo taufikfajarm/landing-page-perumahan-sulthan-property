@@ -43,6 +43,8 @@ class SurveyLokasiForm
                             ->disk('public')
                             ->directory('survey-lokasi')
                             ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1000')
                             ->required()
                             ->maxSize(5120),
                         \Filament\Forms\Components\TextInput::make('order')

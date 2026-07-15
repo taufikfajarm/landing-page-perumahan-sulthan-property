@@ -33,6 +33,8 @@ class ProsesAkadForm
                     ->disk('public')
                     ->directory('proses-akad')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000')
                     ->maxSize(5120)
                     ->maxFiles(30)
                     ->columnSpanFull()

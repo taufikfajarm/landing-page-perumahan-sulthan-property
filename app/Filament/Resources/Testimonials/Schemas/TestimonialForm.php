@@ -28,6 +28,8 @@ class TestimonialForm
                     ->maxSize(2048)
                     ->directory('testimonials')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('200')
                     ->avatar()
                     ->columnSpanFull(),
                 Textarea::make('content')

@@ -38,6 +38,8 @@ class HousingForm
                     ->maxSize(5120)
                     ->directory('housing-images')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000')
                     ->columnSpanFull(),
                 Textarea::make('description')
                     ->label('Deskripsi')
@@ -79,6 +81,8 @@ class HousingForm
                     ->maxSize(5120)
                     ->directory('site-plans')
                     ->imageEditor()
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('1200')
                     ->columnSpanFull(),
                 
                 \Filament\Forms\Components\Repeater::make('facilities')
@@ -95,6 +99,8 @@ class HousingForm
                             ->disk('public')
                             ->directory('facility-icons')
                             ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('120')
                             ->maxSize(2048),
                         TextInput::make('order')
                             ->label('Urutan')

@@ -40,6 +40,8 @@ class HeroSectionForm
                             ->disk('public')
                             ->directory('hero-images')
                             ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1200')
                             ->required()
                             ->maxSize(5120),
                         \Filament\Forms\Components\TextInput::make('order')

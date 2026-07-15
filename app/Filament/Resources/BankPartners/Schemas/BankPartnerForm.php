@@ -25,6 +25,8 @@ class BankPartnerForm
                     ->disk('public')
                     ->directory('bank-logos')
                     ->imageEditor()
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('300')
                     ->helperText('Ukuran optimal: 200x80px (landscape) atau 100x100px (square)')
                     ->columnSpanFull(),
                 

@@ -43,6 +43,8 @@ class BlogForm
                     ->maxSize(5120)
                     ->directory('blog-images')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000')
                     ->columnSpanFull(),
                 
                 // SEO Fields

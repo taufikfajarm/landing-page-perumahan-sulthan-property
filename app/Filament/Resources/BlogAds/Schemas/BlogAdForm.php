@@ -40,6 +40,8 @@ class BlogAdForm
                     ->directory('blog-ads')
                     ->visibility('public')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000')
                     ->helperText('Ukuran yang disarankan: Banner (1200x400px atau rasio 3:1) atau Card (400x400px)')
                     ->columnSpanFull(),
                 

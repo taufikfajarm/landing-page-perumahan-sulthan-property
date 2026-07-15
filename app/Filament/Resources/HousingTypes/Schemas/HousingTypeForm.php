@@ -38,6 +38,8 @@ class HousingTypeForm
                     ->maxSize(5120)
                     ->directory('floor-plans')
                     ->imageEditor()
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('1000')
                     ->columnSpanFull(),
                 
                 FileUpload::make('image_tampak_depan')
@@ -47,7 +49,9 @@ class HousingTypeForm
                     ->directory('gallery')
                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->maxSize(5120)
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000'),
                 
                 FileUpload::make('image_ruang_tamu')
                     ->label('Foto Ruang Tamu')
@@ -56,7 +60,9 @@ class HousingTypeForm
                     ->directory('gallery')
                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->maxSize(5120)
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000'),
                 
                 FileUpload::make('image_kamar')
                     ->label('Foto Kamar Tidur')
@@ -65,7 +71,9 @@ class HousingTypeForm
                     ->directory('gallery')
                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->maxSize(5120)
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000'),
                 
                 FileUpload::make('image_dapur')
                     ->label('Foto Kamar Mandi')
@@ -74,7 +82,9 @@ class HousingTypeForm
                     ->directory('gallery')
                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->maxSize(5120)
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth('1000'),
                 
                 Repeater::make('custom_images')
                     ->label('Foto Ruangan Lainnya (Opsional)')
@@ -89,7 +99,9 @@ class HousingTypeForm
                             ->directory('gallery')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->maxSize(5120)
-                            ->imageEditor(),
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1000'),
                     ])
                     ->columns(2)
                     ->addActionLabel('Tambah Ruangan')
