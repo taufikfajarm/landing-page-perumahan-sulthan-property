@@ -11,16 +11,35 @@ use App\Models\SurveyLokasi;
 use App\Models\ProsesAkad;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Cache;
+
 class HomeController extends Controller
 {
     public function index()
     {
-        $heroSection = HeroSection::active()->with('images')->first();
-        $featuredHousings = Housing::featured()->take(6)->get();
-        $testimonials = Testimonial::active()->get();
-        $recentBlogs = Blog::published()->latest('published_at')->take(3)->get();
-        $surveyLokasi = SurveyLokasi::active()->with('images')->first();
-        $prosesAkad = ProsesAkad::active()->with('images')->first();
+        $heroSection = Cache::rememberForever('home_hero_section', function () {
+            return HeroSection::active()->with('images')->first();
+        });
+
+        $featuredHousings = Cache::rememberForever('home_featured_housings', function () {
+            return Housing::featured()->take(6)->get();
+        });
+
+        $testimonials = Cache::rememberForever('home_testimonials', function () {
+            return Testimonial::active()->get();
+        });
+
+        $recentBlogs = Cache::rememberForever('home_recent_blogs', function () {
+            return Blog::published()->latest('published_at')->take(3)->get();
+        });
+
+        $surveyLokasi = Cache::rememberForever('home_survey_lokasi', function () {
+            return SurveyLokasi::active()->with('images')->first();
+        });
+
+        $prosesAkad = Cache::rememberForever('home_proses_akad', function () {
+            return ProsesAkad::active()->with('images')->first();
+        });
 
         return view('home', compact('heroSection', 'featuredHousings', 'testimonials', 'recentBlogs', 'surveyLokasi', 'prosesAkad'));
     }
