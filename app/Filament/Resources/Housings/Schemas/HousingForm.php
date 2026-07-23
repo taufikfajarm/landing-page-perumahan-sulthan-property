@@ -30,6 +30,14 @@ class HousingForm
                     ->url()
                     ->label('Google Maps URL')
                     ->placeholder('https://maps.google.com/...'),
+                TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->placeholder('-6.8694')
+                    ->helperText('Contoh: -6.868088'),
+                TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->placeholder('109.0453')
+                    ->helperText('Contoh: 109.029150'),
                 FileUpload::make('featured_image')
                     ->label('Foto Utama Perumahan')
                     ->image()

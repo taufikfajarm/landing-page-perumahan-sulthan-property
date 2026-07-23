@@ -321,6 +321,237 @@
 </section>
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
+
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($allHousings->count() > 0): ?>
+<section class="py-20 bg-slate-50 relative overflow-hidden" id="project-locations">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-scroll="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Lokasi Proyek Kami</h2>
+            <p class="text-gray-600 text-lg">Temukan properti idaman Anda di lokasi strategis</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)]" data-scroll="fade-right">
+                <div id="project-map" class="w-full h-[500px] rounded-2xl relative z-0"></div>
+            </div>
+
+            
+            <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-[500px] flex flex-col" data-scroll="fade-left">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 pb-4 border-b border-gray-100">Daftar Proyek</h3>
+                <div class="overflow-y-auto pr-2 space-y-4 flex-1 custom-scrollbar" id="project-list-container">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $allHousings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $housing): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="project-list-item group cursor-pointer p-4 rounded-2xl border border-gray-100 hover:border-primary-200 hover:bg-primary-50 transition-all duration-300" data-index="<?php echo e($index); ?>">
+                        <div class="flex gap-4">
+                            <img src="<?php echo e(get_image_url($housing->featured_image)); ?>" alt="<?php echo e($housing->name); ?>" class="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-gray-900 group-hover:text-primary-600 transition-colors"><?php echo e($housing->name); ?></h4>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2 flex items-start gap-1">
+                                    <svg class="w-3.5 h-3.5 text-primary-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span><?php echo e($housing->location); ?></span>
+                                </p>
+                                <div class="mt-2 text-[10px] font-bold px-2 py-1 <?php echo e($housing->status == 'ready' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'); ?> rounded-md inline-block uppercase tracking-wider">
+                                    <?php echo e($housing->status == 'ready' ? 'Tersedia' : 'Terjual'); ?>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php $__env->startPush('styles'); ?>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .leaflet-popup-content-wrapper { border-radius: 16px !important; box-shadow: 0 12px 30px rgba(0,0,0,0.18) !important; padding: 0 !important; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); }
+    .leaflet-popup-content { margin: 0 !important; width: 280px !important; }
+    .leaflet-popup-close-button { color: #64748b !important; text-shadow: none !important; right: 6px !important; top: 6px !important; z-index: 20; background: rgba(255,255,255,0.8) !important; border-radius: 50% !important; width: 20px !important; height: 20px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+    .leaflet-popup-close-button:hover { color: #0f172a !important; background: #ffffff !important; }
+    #project-map { z-index: 10; }
+</style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.getElementById('project-map')) return;
+
+    // Basis koordinat area Brebes
+    const baseLat = -6.8694;
+    const baseLng = 109.0453;
+
+    const projects = [
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $allHousings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $housing): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php
+            $coords = $housing->coordinates;
+            $dbLat = $housing->latitude;
+            $dbLng = $housing->longitude;
+            $lat = !empty($dbLat) ? $dbLat : ($coords ? $coords['lat'] : -6.8694 + ($index * 0.006) * ($index % 2 === 0 ? 1 : -1));
+            $lng = !empty($dbLng) ? $dbLng : ($coords ? $coords['lng'] : 109.0453 + ($index * 0.012) * ($index % 2 === 0 ? 1 : -1));
+        ?>
+        {
+            id: <?php echo e($housing->id); ?>,
+            name: "<?php echo e(addslashes($housing->name)); ?>",
+            location: "<?php echo e(addslashes($housing->location)); ?>",
+            image: "<?php echo e(get_image_url($housing->featured_image)); ?>",
+            url: "<?php echo e(route('housing.show', $housing->slug)); ?>",
+            lat: parseFloat("<?php echo e($lat); ?>"),
+            lng: parseFloat("<?php echo e($lng); ?>")
+        }<?php echo e($loop->last ? '' : ','); ?>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    ];
+
+    if (projects.length === 0) return;
+
+    const map = L.map('project-map', {
+        scrollWheelZoom: false
+    }).setView([baseLat, baseLng], 13);
+
+    // Use Google Maps Tile Layer for Google Maps colorful aesthetic
+    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '&copy; <a href="https://maps.google.com">Google Maps</a>'
+    }).addTo(map);
+
+    // Google Maps style Teardrop Pin in Blue
+    const customIcon = L.divIcon({
+        className: 'custom-google-pin',
+        html: `
+            <svg width="34" height="44" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.35)); transition: transform 0.2s;">
+                <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 26 16 26s16-14 16-26c0-8.837-7.163-16-16-16z" fill="#0284c7" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="16" cy="15" r="5.5" fill="#0369a1"/>
+            </svg>
+        `,
+        iconSize: [34, 44],
+        iconAnchor: [17, 44],
+        popupAnchor: [0, -42]
+    });
+
+    const activeIcon = L.divIcon({
+        className: 'custom-google-pin-active',
+        html: `
+            <svg width="42" height="54" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0px 6px 12px rgba(2, 132, 199, 0.5));">
+                <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 26 16 26s16-14 16-26c0-8.837-7.163-16-16-16z" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+                <circle cx="16" cy="15" r="6" fill="#ffffff"/>
+                <circle cx="16" cy="15" r="3.5" fill="#0284c7"/>
+            </svg>
+        `,
+        iconSize: [42, 54],
+        iconAnchor: [21, 54],
+        popupAnchor: [0, -52]
+    });
+
+    const markers = [];
+    const bounds = L.latLngBounds();
+
+    projects.forEach((project, index) => {
+        // Sanity check coordinates to prevent zooming out to infinity if invalid numbers are entered
+        let validLat = project.lat;
+        let validLng = project.lng;
+        if (isNaN(validLat) || validLat < -90 || validLat > 90) {
+            validLat = baseLat + (index * 0.005);
+        }
+        if (isNaN(validLng) || validLng < -180 || validLng > 180) {
+            validLng = baseLng + (index * 0.005);
+        }
+        project.lat = validLat;
+        project.lng = validLng;
+
+        const marker = L.marker([project.lat, project.lng], {
+            icon: customIcon,
+            title: project.name
+        }).addTo(map);
+
+        // Desain Popup Horizontal Ringkas & Profesional
+        const popupContent = `
+            <div style="display: flex; width: 280px; background: #ffffff; overflow: hidden; font-family: 'Raleway', sans-serif;">
+                <div style="width: 95px; height: 95px; flex-shrink: 0; position: relative;">
+                    <img src="${project.image}" alt="${project.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 10px 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+                    <div>
+                        <h4 style="font-weight: 700; font-size: 13px; margin: 0 0 3px 0; color: #111827; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${project.name}</h4>
+                        <p style="font-size: 10px; color: #6b7280; margin: 0; line-height: 1.3; display: flex; align-items: center; gap: 3px;">
+                            <svg style="width: 10px; height: 10px; color: #0284c7; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 130px;">${project.location}</span>
+                        </p>
+                    </div>
+                    <a href="${project.url}" style="display: inline-block; text-align: center; background-color: #0284c7; color: white; text-decoration: none; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; transition: background 0.2s; margin-top: 4px;" onmouseover="this.style.backgroundColor='#0369a1'" onmouseout="this.style.backgroundColor='#0284c7'">Detail Proyek &rarr;</a>
+                </div>
+            </div>
+        `;
+
+        marker.bindPopup(popupContent, {
+            autoPan: true,
+            autoPanPaddingTopLeft: L.point(30, 80),
+            autoPanPaddingBottomRight: L.point(30, 30),
+            keepInView: true
+        });
+        
+        // Marker click event to highlight active marker & pan map safely
+        marker.on('click', function() {
+            markers.forEach(m => m.setIcon(customIcon));
+            this.setIcon(activeIcon);
+            map.flyTo([project.lat + 0.003, project.lng], 15, { duration: 1.0 });
+        });
+
+        markers.push(marker);
+        bounds.extend([project.lat, project.lng]);
+    });
+
+    if (projects.length > 0) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    // Perbaikan untuk mengatasi map abu-abu karena animasi CSS saat map dimuat
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 800);
+
+    const listItems = document.querySelectorAll('.project-list-item');
+    listItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            const marker = markers[index];
+            const project = projects[index];
+
+            // Reset all markers & highlight selected marker
+            markers.forEach(m => m.setIcon(customIcon));
+            marker.setIcon(activeIcon);
+
+            listItems.forEach(i => {
+                i.classList.remove('bg-primary-50', 'border-primary-200');
+                i.classList.add('border-gray-100');
+            });
+            this.classList.remove('border-gray-100');
+            this.classList.add('bg-primary-50', 'border-primary-200');
+
+            // Geser posisi tengah sedikit ke utara agar pin berada di bagian bawah & popup memiliki ruang luas di atas
+            map.flyTo([project.lat + 0.003, project.lng], 15, {
+                duration: 1.2
+            });
+            
+            setTimeout(() => {
+                marker.openPopup();
+            }, 600);
+        });
+    });
+});
+</script>
+<?php $__env->stopPush(); ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($testimonials->count() > 0): ?>
 <section class="py-20 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
     <div class="absolute -left-40 top-20 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-70"></div>

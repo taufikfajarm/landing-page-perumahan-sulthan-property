@@ -11,6 +11,8 @@ class Housing extends Model
         'slug',
         'location',
         'location_url',
+        'latitude',
+        'longitude',
         'featured_image',
         'description',
         'status',
@@ -63,5 +65,10 @@ class Housing extends Model
         return $this->status === 'ready' 
             ? '<span class="badge badge-success">Ready</span>' 
             : '<span class="badge badge-danger">Sold Out</span>';
+    }
+
+    public function getCoordinatesAttribute()
+    {
+        return null;
     }
 }

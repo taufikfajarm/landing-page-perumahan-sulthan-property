@@ -41,7 +41,11 @@ class HomeController extends Controller
             return ProsesAkad::active()->with('images')->first();
         });
 
-        return view('home', compact('heroSection', 'featuredHousings', 'testimonials', 'recentBlogs', 'surveyLokasi', 'prosesAkad'));
+        $allHousings = Cache::rememberForever('home_all_housings', function () {
+            return Housing::get();
+        });
+
+        return view('home', compact('heroSection', 'featuredHousings', 'allHousings', 'testimonials', 'recentBlogs', 'surveyLokasi', 'prosesAkad'));
     }
 
     public function storeContact(Request $request)
