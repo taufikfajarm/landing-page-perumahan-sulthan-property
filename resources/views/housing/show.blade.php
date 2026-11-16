@@ -120,16 +120,20 @@
                     data: null,
                     hoveredBlok: null,
                     tooltip: { x: 0, y: 0 },
-                    imgDimensions: { width: 1920, height: 1080 },
+                    imgDimensions: { width: 1700, height: 1002 },
                     init() {
                         fetch('https://sip.sulthanproperty.com/api/public/siteplan/{{ $housing->siteplan_sip_id }}')
                             .then(res => {
-                                if (!res.ok) throw new Error('Network error');
+                                if (!res.ok) throw new Error('Network error: ' + res.status);
                                 return res.json();
                             })
                             .then(json => {
                                 this.data = json;
                                 this.loading = false;
+                                this.$nextTick(() => {
+                                    this.renderSvg();
+                                    this.attachEvents();
+                                });
                             })
                             .catch(err => {
                                 console.warn('Gagal memuat API SIP siteplan, fallback ke gambar statis:', err);
@@ -138,40 +142,132 @@
                             });
                     },
                     onImgLoad(e) {
-                        this.imgDimensions = {
-                            width: e.target.naturalWidth || 1920,
-                            height: e.target.naturalHeight || 1080
+                        if (e.target.naturalWidth && e.target.naturalHeight) {
+                            this.imgDimensions = {
+                                width: e.target.naturalWidth,
+                                height: e.target.naturalHeight
+                            };
+                            this.renderSvg();
+                        }
+                    },
+                    pathToPoints(path) {
+                        if (!path) return '';
+                        const nums = path.match(/-?[\d.]+/g);
+                        if (!nums || nums.length < 8) return '';
+                        return `${nums[0]},${nums[1]} ${nums[2]},${nums[3]} ${nums[4]},${nums[5]} ${nums[6]},${nums[7]}`;
+                    },
+                    getCenter(path) {
+                        if (!path) return { x: 0, y: 0 };
+                        const nums = path.match(/-?[\d.]+/g);
+                        if (!nums || nums.length < 8) return { x: 0, y: 0 };
+                        return {
+                            x: (parseFloat(nums[0]) + parseFloat(nums[2]) + parseFloat(nums[4]) + parseFloat(nums[6])) / 4,
+                            y: (parseFloat(nums[1]) + parseFloat(nums[3]) + parseFloat(nums[5]) + parseFloat(nums[7])) / 4
                         };
                     },
-                    onHover(e, blok) {
-                        this.hoveredBlok = blok;
-                        const rect = this.$refs.siteplanContainer.getBoundingClientRect();
-                        this.tooltip = {
-                            x: Math.min(Math.max(10, e.clientX - rect.left), rect.width - 200),
-                            y: Math.max(10, e.clientY - rect.top - 80)
+                    isWhite(color) {
+                        return !color || color.toLowerCase() === '#ffffff' || color.toLowerCase() === '#fff' || color.toLowerCase() === 'white';
+                    },
+                    hexToRgba(hex, alpha) {
+                        if (!hex) return `rgba(239, 68, 68, ${alpha})`;
+                        const clean = hex.replace('#', '');
+                        const r = parseInt(clean.substring(0, 2), 16) || 239;
+                        const g = parseInt(clean.substring(2, 4), 16) || 68;
+                        const b = parseInt(clean.substring(4, 6), 16) || 68;
+                        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                    },
+                    renderSvg() {
+                        const svg = this.$refs.svgOverlay;
+                        if (!svg || !this.data || !this.data.bloks) return;
+
+                        const width = this.imgDimensions.width;
+                        const fontSize = Math.max(12, Math.round(width * 0.012));
+                        let html = '';
+
+                        this.data.bloks.forEach(blok => {
+                            const points = this.pathToPoints(blok.svg_path);
+                            if (!points) return;
+
+                            const isHovered = this.hoveredBlok && this.hoveredBlok.id === blok.id;
+                            const color = blok.status_warna || (blok.status_id === 1 ? '#ffffff' : '#ef4444');
+                            const isTersedia = this.isWhite(color);
+
+                            // Blok Booking diberi warna merah transparan (0.55), saat di-hover menjadi merah tegas (0.85)
+                            const fill = isHovered 
+                                ? (isTersedia ? 'rgba(255, 255, 255, 0.9)' : this.hexToRgba(color, 0.85))
+                                : (isTersedia ? 'rgba(255, 255, 255, 0.45)' : this.hexToRgba(color, 0.55));
+
+                            const stroke = isHovered ? '#0f172a' : (isTersedia ? '#94a3b8' : color);
+                            const strokeWidth = isHovered ? 2.5 : 1.5;
+                            const center = this.getCenter(blok.svg_path);
+
+                            html += `
+                                <g class="cursor-pointer" data-blok-id="${blok.id}">
+                                    <polygon points="${points}" 
+                                             fill="${fill}" 
+                                             stroke="${stroke}" 
+                                             stroke-width="${strokeWidth}" 
+                                             stroke-linejoin="round" 
+                                             style="transition: all 0.15s ease;" />
+                                    <text x="${center.x}" y="${center.y + (fontSize * 0.35)}" 
+                                          text-anchor="middle" 
+                                          font-weight="800" 
+                                          font-size="${fontSize}px" 
+                                          fill="#0f172a" 
+                                          style="font-family: inherit; paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; user-select: none;">
+                                        ${blok.nama}
+                                    </text>
+                                </g>
+                            `;
+                        });
+
+                        svg.innerHTML = html;
+                    },
+                    attachEvents() {
+                        const svg = this.$refs.svgOverlay;
+                        if (!svg) return;
+
+                        const handleEvent = (e) => {
+                            const group = e.target.closest('g[data-blok-id]');
+                            if (!group) {
+                                if (e.type === 'mouseleave') {
+                                    this.hoveredBlok = null;
+                                    this.renderSvg();
+                                }
+                                return;
+                            }
+                            const id = parseInt(group.getAttribute('data-blok-id'));
+                            const blok = this.data.bloks.find(b => b.id === id);
+                            if (blok && (!this.hoveredBlok || this.hoveredBlok.id !== blok.id)) {
+                                this.hoveredBlok = blok;
+                                this.renderSvg();
+                            }
+
+                            if (blok && this.$refs.siteplanContainer) {
+                                const rect = this.$refs.siteplanContainer.getBoundingClientRect();
+                                const clientX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+                                const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
+                                this.tooltip = {
+                                    x: Math.min(Math.max(10, clientX - rect.left), rect.width - 220),
+                                    y: Math.max(10, clientY - rect.top - 100)
+                                };
+                            }
                         };
-                    },
-                    getFill(blok) {
-                        if (this.hoveredBlok && this.hoveredBlok.id === blok.id) {
-                            return blok.status_warna ? blok.status_warna : 'rgba(239, 68, 68, 0.85)';
-                        }
-                        const isTersedia = blok.status_id === 1 || blok.status_nama?.toLowerCase() === 'tersedia';
-                        return isTersedia ? 'rgba(255, 255, 255, 0.65)' : 'rgba(239, 68, 68, 0.65)';
-                    },
-                    getStroke(blok) {
-                        if (this.hoveredBlok && this.hoveredBlok.id === blok.id) {
-                            return '#0f172a';
-                        }
-                        const isTersedia = blok.status_id === 1 || blok.status_nama?.toLowerCase() === 'tersedia';
-                        return isTersedia ? '#059669' : '#b91c1c';
+
+                        svg.addEventListener('mousemove', handleEvent);
+                        svg.addEventListener('mouseleave', handleEvent);
+                        svg.addEventListener('click', handleEvent);
+                        svg.addEventListener('touchstart', (e) => {
+                            if (e.touches && e.touches[0]) handleEvent(e.touches[0]);
+                        }, { passive: true });
                     }
                 }" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
                     
                     {{-- Header & Legenda --}}
                     <div class="px-5 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 bg-gray-50/70">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-900 leading-tight">Siteplan Interaktif</h2>
-                            <p class="text-xs text-gray-500">Arahkan kursor atau sentuh kavling untuk melihat ketersediaan unit</p>
+                            <h2 class="text-lg font-bold text-gray-900 leading-tight">Siteplan Interaktif Realtime</h2>
+                            <p class="text-xs text-gray-500">Kavling merah menandakan unit sudah terbooking</p>
                         </div>
 
                         <div class="flex items-center gap-3">
@@ -179,9 +275,12 @@
                                 <div class="flex items-center gap-2">
                                     <template x-for="st in data.statusBloks" :key="st.id">
                                         <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border bg-white shadow-xs">
-                                            <span class="w-3 h-3 rounded-full border" :style="{ backgroundColor: st.warna, borderColor: '#cbd5e1' }"></span>
+                                            <span class="w-3 h-3 rounded-full border" 
+                                                  :style="{ backgroundColor: st.warna, borderColor: isWhite(st.warna) ? '#94a3b8' : st.warna }"></span>
                                             <span x-text="st.nama" class="text-gray-700"></span>
-                                            <span x-show="data.stats && data.stats[st.id] !== undefined" class="text-gray-900 font-bold ml-1 pl-1 border-l border-gray-200" x-text="data.stats[st.id]"></span>
+                                            <span x-show="data.stats && data.stats[st.id] !== undefined" 
+                                                  class="text-gray-900 font-bold ml-1 pl-1 border-l border-gray-200" 
+                                                  x-text="data.stats[st.id]"></span>
                                         </div>
                                     </template>
                                 </div>
@@ -226,24 +325,12 @@
                                      @load="onImgLoad($event)">
                             </template>
 
-                            {{-- SVG Polygon Layer --}}
-                            <template x-if="data && data.bloks">
-                                <svg :viewBox="`0 0 ${imgDimensions.width} ${imgDimensions.height}`" 
-                                     class="absolute inset-0 w-full h-full pointer-events-auto">
-                                    <template x-for="blok in data.bloks" :key="blok.id">
-                                        <path :d="blok.svg_path" 
-                                              :fill="getFill(blok)" 
-                                              :stroke="getStroke(blok)" 
-                                              stroke-width="2" 
-                                              stroke-linejoin="round"
-                                              class="cursor-pointer transition-colors duration-150"
-                                              @mouseenter="onHover($event, blok)"
-                                              @mousemove="onHover($event, blok)"
-                                              @mouseleave="hoveredBlok = null"
-                                              @click="onHover($event, blok)"></path>
-                                    </template>
-                                </svg>
-                            </template>
+                            {{-- SVG Polygon & Text Layer --}}
+                            <svg ref="svgOverlay"
+                                 :viewBox="`0 0 ${imgDimensions.width} ${imgDimensions.height}`" 
+                                 class="absolute inset-0 w-full h-full pointer-events-auto"
+                                 preserveAspectRatio="xMidYMid meet">
+                            </svg>
 
                             {{-- Hover Tooltip Card --}}
                             <div x-show="hoveredBlok" 
@@ -252,7 +339,7 @@
                                  :style="`left: ${tooltip.x}px; top: ${tooltip.y}px; border-color: ${hoveredBlok?.status_warna || '#e2e8f0'};`">
                                 <div class="flex items-center justify-between gap-2 mb-1">
                                     <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Kavling</span>
-                                    <span class="w-2 h-2 rounded-full" :style="`background-color: ${hoveredBlok?.status_warna || '#94a3b8'};`"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full" :style="`background-color: ${hoveredBlok?.status_warna || '#94a3b8'};`"></span>
                                 </div>
                                 <div class="text-xl font-extrabold text-gray-900 leading-none mb-1.5" x-text="hoveredBlok?.nama"></div>
                                 <div class="inline-block px-2 py-0.5 rounded text-[11px] font-bold text-white mb-2"
@@ -266,6 +353,11 @@
                         </div>
                     </div>
                 </div>
+                @elseif($housing->site_plan)
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+                    <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy" width="800" height="500">
+                </div>
+                @endif
                 @elseif($housing->site_plan)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
                     <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy" width="800" height="500">
