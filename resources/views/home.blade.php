@@ -720,7 +720,16 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="text-gray-600 text-lg">Isi form di bawah untuk mendapatkan informasi lengkap</p>
         </div>
 
-        <div x-data="{ showSuccessModal: {{ session('success') ? 'true' : 'false' }} }">
+        <div x-data="{ 
+            showSuccessModal: {{ session('success') ? 'true' : 'false' }},
+            phone: '{{ old('phone') }}',
+            phoneTouched: false,
+            isValidPhone() {
+                if (!this.phone) return true;
+                const clean = this.phone.replace(/[^0-9+]/g, '');
+                return /^(\+?62|0)8[1-9][0-9]{7,11}$/.test(clean);
+            }
+        }">
             <form action="{{ route('contact.store') }}" method="POST" class="bg-white/60 backdrop-blur-2xl border border-white/60 p-8 md:p-12 rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] relative z-10" data-scroll="fade-up" data-scroll-delay="200">
                 @csrf
 
@@ -760,10 +769,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                maxlength="16" 
                                pattern="^(\+?62|0)8[1-9][0-9]{7,11}$" 
                                placeholder="Contoh: 081234567890" 
-                               title="Gunakan format nomor seluler Indonesia yang diawali 08 atau +628 (10-14 digit)"
+                               x-model="phone"
+                               @blur="phoneTouched = true"
+                               @input="if(phone.length >= 4) phoneTouched = true"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent @error('phone') border-red-500 @enderror" 
+                               :class="{ 'border-red-500': phoneTouched && !isValidPhone() }"
                                value="{{ old('phone') }}">
-                        <p class="text-xs text-gray-500 mt-1">Pastikan nomor aktif terdaftar di WhatsApp untuk pengiriman brosur.</p>
+                        <p x-cloak x-show="phoneTouched && !isValidPhone()" class="text-red-500 text-sm mt-1">
+                            Format nomor WhatsApp tidak sesuai (contoh: 081234567890).
+                        </p>
                         @error('phone')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
