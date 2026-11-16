@@ -23,30 +23,34 @@ class VisitorStatsWidget extends ChartWidget
         $filter = $this->filter;
 
         if ($filter === 'monthly') {
-            // Last 12 months
+            $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+            $counts = PageVisit::where('visited_at', '>=', $startDate)
+                ->selectRaw('SUBSTR(visited_at, 1, 7) as ym, count(*) as count')
+                ->groupBy('ym')
+                ->pluck('count', 'ym');
+
             $data = [];
             $labels = [];
-            
             for ($i = 11; $i >= 0; $i--) {
                 $date = Carbon::now()->subMonths($i);
-                $count = PageVisit::whereYear('visited_at', $date->year)
-                    ->whereMonth('visited_at', $date->month)
-                    ->count();
-                
+                $key = $date->format('Y-m');
                 $labels[] = $date->format('M Y');
-                $data[] = $count;
+                $data[] = (int) ($counts[$key] ?? 0);
             }
         } else {
-            // Last 30 days
+            $startDate = Carbon::now()->subDays(29)->startOfDay();
+            $counts = PageVisit::where('visited_at', '>=', $startDate)
+                ->selectRaw('DATE(visited_at) as dt, count(*) as count')
+                ->groupBy('dt')
+                ->pluck('count', 'dt');
+
             $data = [];
             $labels = [];
-            
             for ($i = 29; $i >= 0; $i--) {
                 $date = Carbon::now()->subDays($i);
-                $count = PageVisit::whereDate('visited_at', $date->toDateString())->count();
-                
+                $key = $date->toDateString();
                 $labels[] = $date->format('d M');
-                $data[] = $count;
+                $data[] = (int) ($counts[$key] ?? 0);
             }
         }
 

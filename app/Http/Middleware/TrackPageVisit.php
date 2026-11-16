@@ -43,12 +43,14 @@ class TrackPageVisit
             }
 
             if ($shouldTrack) {
-                PageVisit::create([
-                    'url' => $request->fullUrl(),
-                    'ip_address' => $request->ip(),
-                    'user_agent' => $request->userAgent(),
-                    'visited_at' => now(),
-                ]);
+                rescue(function () use ($request) {
+                    PageVisit::create([
+                        'url' => $request->fullUrl(),
+                        'ip_address' => $request->ip(),
+                        'user_agent' => $request->userAgent(),
+                        'visited_at' => now(),
+                    ]);
+                }, null, false);
             }
         }
 

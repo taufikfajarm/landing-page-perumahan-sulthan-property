@@ -69,6 +69,13 @@ class Housing extends Model
 
     public function getCoordinatesAttribute()
     {
+        if (is_numeric($this->latitude) && is_numeric($this->longitude)) {
+            return [
+                'lat' => (float) $this->latitude,
+                'lng' => (float) $this->longitude,
+            ];
+        }
+
         return null;
     }
 }

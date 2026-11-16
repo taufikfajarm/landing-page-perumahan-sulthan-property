@@ -368,6 +368,21 @@
     .leaflet-popup-content { margin: 0 !important; width: 280px !important; }
     .leaflet-popup-close-button { color: #64748b !important; text-shadow: none !important; right: 6px !important; top: 6px !important; z-index: 20; background: rgba(255,255,255,0.8) !important; border-radius: 50% !important; width: 20px !important; height: 20px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
     .leaflet-popup-close-button:hover { color: #0f172a !important; background: #ffffff !important; }
+    .project-pin-label {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 6px !important;
+        padding: 3px 8px !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        font-family: 'Raleway', sans-serif !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+        white-space: nowrap !important;
+    }
+    .project-pin-label::before {
+        border-top-color: #0f172a !important;
+    }
     #project-map { z-index: 10; }
 </style>
 @endpush
@@ -386,10 +401,8 @@ document.addEventListener('DOMContentLoaded', function() {
         @foreach($allHousings as $index => $housing)
         @php
             $coords = $housing->coordinates;
-            $dbLat = $housing->latitude;
-            $dbLng = $housing->longitude;
-            $lat = !empty($dbLat) ? $dbLat : ($coords ? $coords['lat'] : -6.8694 + ($index * 0.006) * ($index % 2 === 0 ? 1 : -1));
-            $lng = !empty($dbLng) ? $dbLng : ($coords ? $coords['lng'] : 109.0453 + ($index * 0.012) * ($index % 2 === 0 ? 1 : -1));
+            $lat = $coords ? $coords['lat'] : -6.8694 + ($index * 0.006) * ($index % 2 === 0 ? 1 : -1);
+            $lng = $coords ? $coords['lng'] : 109.0453 + ($index * 0.012) * ($index % 2 === 0 ? 1 : -1);
         @endphp
         {
             id: {{ $housing->id }},
@@ -397,8 +410,8 @@ document.addEventListener('DOMContentLoaded', function() {
             location: "{{ addslashes($housing->location) }}",
             image: "{{ get_image_url($housing->featured_image) }}",
             url: "{{ route('housing.show', $housing->slug) }}",
-            lat: parseFloat("{{ $lat }}"),
-            lng: parseFloat("{{ $lng }}")
+            lat: {{ $lat }},
+            lng: {{ $lng }}
         }{{ $loop->last ? '' : ',' }}
         @endforeach
     ];
@@ -465,6 +478,14 @@ document.addEventListener('DOMContentLoaded', function() {
             title: project.name
         }).addTo(map);
 
+        // Tooltip kecil nama proyek yang selalu muncul sebelum diklik
+        marker.bindTooltip(project.name, {
+            permanent: true,
+            direction: 'top',
+            className: 'project-pin-label',
+            offset: [0, -44]
+        });
+
         // Desain Popup Horizontal Ringkas & Profesional
         const popupContent = `
             <div style="display: flex; width: 280px; background: #ffffff; overflow: hidden; font-family: 'Raleway', sans-serif;">
@@ -491,6 +512,14 @@ document.addEventListener('DOMContentLoaded', function() {
             keepInView: true
         });
         
+        // Sembunyikan tooltip kecil saat popup besar terbuka agar tidak menumpuk
+        marker.on('popupopen', function() {
+            if (this.getTooltip()) this.getTooltip().setOpacity(0);
+        });
+        marker.on('popupclose', function() {
+            if (this.getTooltip()) this.getTooltip().setOpacity(1);
+        });
+
         // Marker click event to highlight active marker & pan map safely
         marker.on('click', function() {
             markers.forEach(m => m.setIcon(customIcon));

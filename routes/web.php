@@ -8,7 +8,6 @@ use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\WhatsAppClickController;
-use App\Http\Controllers\SitemapController;
 
 // GitHub Actions Auto-Deploy Test
 // Home
@@ -30,10 +29,10 @@ Route::get('/marketing', [MarketingController::class, 'index'])->name('marketing
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 // Contact
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
 // WhatsApp Click Tracking
-Route::post('/track-whatsapp-click', [WhatsAppClickController::class, 'track'])->name('whatsapp.track');
+Route::post('/track-whatsapp-click', [WhatsAppClickController::class, 'track'])->middleware('throttle:30,1')->name('whatsapp.track');
 
 // Blog Ad Click Tracking
 Route::get('/blog-ad/{id}/click', [BlogController::class, 'trackAdClick'])->name('blog-ad.click');

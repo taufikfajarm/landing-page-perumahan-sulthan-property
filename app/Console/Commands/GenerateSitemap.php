@@ -66,7 +66,7 @@ class GenerateSitemap extends Command
         $this->info("  - Added {$blogs->count()} blog posts");
 
         // Housing projects
-        $housings = Housing::all();
+        $housings = Housing::with('types')->get();
         foreach ($housings as $housing) {
             $sitemap->add(
                 Url::create(config('app.url') . '/perumahan/' . $housing->slug)

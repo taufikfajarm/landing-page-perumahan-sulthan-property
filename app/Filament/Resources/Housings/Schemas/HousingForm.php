@@ -32,10 +32,16 @@ class HousingForm
                     ->placeholder('https://maps.google.com/...'),
                 TextInput::make('latitude')
                     ->label('Latitude')
+                    ->numeric()
+                    ->minValue(-90)
+                    ->maxValue(90)
                     ->placeholder('-6.8694')
                     ->helperText('Contoh: -6.868088'),
                 TextInput::make('longitude')
                     ->label('Longitude')
+                    ->numeric()
+                    ->minValue(-180)
+                    ->maxValue(180)
                     ->placeholder('109.0453')
                     ->helperText('Contoh: 109.029150'),
                 FileUpload::make('featured_image')

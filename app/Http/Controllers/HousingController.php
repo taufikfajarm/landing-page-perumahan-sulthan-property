@@ -22,7 +22,7 @@ class HousingController extends Controller
     public function show($slug)
     {
         $housing = Cache::rememberForever("housing_show_{$slug}", function () use ($slug) {
-            return Housing::where('slug', $slug)->with('types')->firstOrFail();
+            return Housing::where('slug', $slug)->with(['types', 'facilities', 'accessPoints'])->firstOrFail();
         });
         
         return view('housing.show', compact('housing'));

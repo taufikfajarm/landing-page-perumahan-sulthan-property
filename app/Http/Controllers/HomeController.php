@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Housing;
 use App\Models\Testimonial;
 use App\Models\Blog;
-use App\Models\Contact;
 use App\Models\HeroSection;
 use App\Models\SurveyLokasi;
 use App\Models\ProsesAkad;
@@ -46,19 +45,5 @@ class HomeController extends Controller
         });
 
         return view('home', compact('heroSection', 'featuredHousings', 'allHousings', 'testimonials', 'recentBlogs', 'surveyLokasi', 'prosesAkad'));
-    }
-
-    public function storeContact(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'message' => 'required|string',
-        ]);
-
-        Contact::create($validated);
-
-        return back()->with('success', 'Terima kasih! Pesan Anda telah terkirim.');
     }
 }

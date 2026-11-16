@@ -47,6 +47,6 @@ class MarketingWhatsAppStatsWidget extends BaseWidget
                     ->sortable(),
             ])
             ->paginated(false)
-            ->poll('10s');
+            ->poll('60s');
     }
 }
