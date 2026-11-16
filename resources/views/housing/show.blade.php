@@ -151,7 +151,7 @@
                     </div>
 
                     {{-- Container Area Siteplan --}}
-                    <div ref="siteplanContainer" class="relative w-full overflow-hidden bg-gray-900 flex items-center justify-center min-h-[450px]">
+                    <div x-ref="siteplanContainer" class="relative w-full overflow-hidden bg-gray-900 flex items-center justify-center min-h-[450px]">
                         {{-- Loading Spinner --}}
                         <div x-show="loading" class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-20">
                             <div class="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-3"></div>
@@ -172,17 +172,18 @@
                         {{-- Realtime Interactive SVG Canvas --}}
                         <div x-show="!loading && !error && data" class="relative w-full">
                             <template x-if="data && data.proyek && data.proyek.siteplan">
-                                <img :src="data.proyek.siteplan" 
+                                <img x-ref="siteplanImage"
+                                     :src="data.proyek.siteplan" 
                                      alt="Site Plan {{ $housing->name }}" 
                                      class="w-full h-auto block select-none pointer-events-none"
                                      @load="onImgLoad($event)">
                             </template>
 
                             {{-- SVG Polygon & Text Layer --}}
-                            <svg ref="svgOverlay"
+                            <svg x-ref="svgOverlay"
                                  :viewBox="`0 0 ${imgDimensions.width} ${imgDimensions.height}`" 
                                  class="absolute inset-0 w-full h-full pointer-events-auto"
-                                 preserveAspectRatio="xMidYMid meet">
+                                 preserveAspectRatio="none">
                             </svg>
 
                             {{-- Hover Tooltip Card --}}
@@ -275,7 +276,7 @@ function siteplanViewer(sipId) {
         data: null,
         hoveredBlok: null,
         tooltip: { x: 0, y: 0 },
-        imgDimensions: { width: 1700, height: 1002 },
+        imgDimensions: { width: 1714, height: 2336 },
         init() {
             fetch('https://sip.sulthanproperty.com/api/public/siteplan/' + sipId)
                 .then(res => {
@@ -286,6 +287,7 @@ function siteplanViewer(sipId) {
                     this.data = json;
                     this.loading = false;
                     this.$nextTick(() => {
+                        this.syncDimensions();
                         this.renderSvg();
                         this.attachEvents();
                     });
@@ -296,14 +298,24 @@ function siteplanViewer(sipId) {
                     this.loading = false;
                 });
         },
+        syncDimensions() {
+            const img = this.$refs.siteplanImage;
+            if (img && img.naturalWidth && img.naturalHeight) {
+                this.imgDimensions = {
+                    width: img.naturalWidth,
+                    height: img.naturalHeight
+                };
+            }
+        },
         onImgLoad(e) {
             if (e.target.naturalWidth && e.target.naturalHeight) {
                 this.imgDimensions = {
                     width: e.target.naturalWidth,
                     height: e.target.naturalHeight
                 };
-                this.renderSvg();
             }
+            this.renderSvg();
+            this.attachEvents();
         },
         pathToPoints(path) {
             if (!path) return '';
@@ -336,6 +348,10 @@ function siteplanViewer(sipId) {
             if (!svg || !this.data || !this.data.bloks) return;
 
             const width = this.imgDimensions.width;
+            const height = this.imgDimensions.height;
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.setAttribute('preserveAspectRatio', 'none');
+
             const fontSize = Math.max(12, Math.round(width * 0.012));
             let html = '';
 
@@ -347,6 +363,7 @@ function siteplanViewer(sipId) {
                 const color = blok.status_warna || (blok.status_id === 1 ? '#ffffff' : '#ef4444');
                 const isTersedia = this.isWhite(color);
 
+                // Warna booking merah transparan (0.55), saat di-hover lebih pekat (0.85)
                 const fill = isHovered 
                     ? (isTersedia ? 'rgba(255, 255, 255, 0.9)' : this.hexToRgba(color, 0.85))
                     : (isTersedia ? 'rgba(255, 255, 255, 0.45)' : this.hexToRgba(color, 0.55));
@@ -408,12 +425,12 @@ function siteplanViewer(sipId) {
                 }
             };
 
-            svg.addEventListener('mousemove', handleEvent);
-            svg.addEventListener('mouseleave', handleEvent);
-            svg.addEventListener('click', handleEvent);
-            svg.addEventListener('touchstart', (e) => {
+            svg.onmousemove = handleEvent;
+            svg.onmouseleave = handleEvent;
+            svg.onclick = handleEvent;
+            svg.ontouchstart = (e) => {
                 if (e.touches && e.touches[0]) handleEvent(e.touches[0]);
-            }, { passive: true });
+            };
         }
     };
 }
