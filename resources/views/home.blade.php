@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Sulthan Property - Perumahan Berkualitas dengan Harga Terjangkau di Jawa Tengah')
-@section('meta_description', 'Sulthan Property developer properti terpercaya. Kami menyediakan perumahan subsidi dan komersil berkualitas dengan lokasi strategis, harga terjangkau, dan nilai investasi tinggi.')
+@section('title', 'Sulthan Property - Perumahan Murah & Subsidi di Brebes')
+@section('meta_description', 'Developer perumahan terpercaya di Brebes & Tegal. Menyediakan rumah subsidi & komersil berkualitas, lokasi strategis, DP ringan, dan cicilan mudah.')
 @section('meta_keywords', 'perumahan subsidi, rumah murah, perumahan elit, perumahan brebes, developer properti jawa tengah, beli rumah KPR, sulthan property, investasi rumah')
 @section('og_title', 'Sulthan Property - Perumahan Berkualitas')
 @section('og_description', 'Temukan hunian impian Anda bersama Sulthan Property. Kualitas bangunan terbaik, proses KPR mudah, dan lokasi strategis.')
@@ -337,7 +337,7 @@
                     @foreach($allHousings as $index => $housing)
                     <div class="project-list-item group cursor-pointer p-4 rounded-2xl border border-gray-100 hover:border-primary-200 hover:bg-primary-50 transition-all duration-300" data-index="{{ $index }}">
                         <div class="flex gap-4">
-                            <img src="{{ get_image_url($housing->featured_image) }}" alt="{{ $housing->name }}" class="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <img src="{{ get_image_url($housing->featured_image) }}" alt="{{ $housing->name }}" class="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-300" loading="lazy" width="64" height="64">
                             <div class="flex-1">
                                 <h4 class="font-bold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $housing->name }}</h4>
                                 <p class="text-xs text-gray-500 mt-1 line-clamp-2 flex items-start gap-1">

@@ -79,7 +79,7 @@
                         <div class="flex flex-col items-center text-center">
                             @if($facility->icon)
                             <div class="w-16 h-16 mb-3 flex items-center justify-center">
-                                <img src="{{ get_image_url($facility->icon) }}" alt="{{ $facility->name }}" class="w-full h-full object-contain">
+                                <img src="{{ get_image_url($facility->icon) }}" alt="{{ $facility->name }}" class="w-full h-full object-contain" loading="lazy" width="64" height="64">
                             </div>
                             @else
                             <div class="w-16 h-16 mb-3 bg-primary-100 rounded-full flex items-center justify-center">
@@ -126,7 +126,7 @@
                 </div>
                 @elseif($housing->site_plan)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-                    <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full">
+                    <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy" width="800" height="500">
                 </div>
                 @endif
             </div>

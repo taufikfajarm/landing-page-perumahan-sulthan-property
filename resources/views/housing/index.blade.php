@@ -21,9 +21,9 @@
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
                 <div class="relative h-56 bg-gray-200">
                     @if($housing->featured_image)
-                    <img src="{{ get_image_url($housing->featured_image) }}" alt="{{ $housing->name }}" class="w-full h-full object-cover">
+                    <img src="{{ get_image_url($housing->featured_image) }}" alt="{{ $housing->name }}" class="w-full h-full object-cover" loading="lazy" width="400" height="224">
                     @elseif($housing->site_plan)
-                    <img src="{{ get_image_url($housing->site_plan) }}" alt="{{ $housing->name }}" class="w-full h-full object-cover">
+                    <img src="{{ get_image_url($housing->site_plan) }}" alt="{{ $housing->name }}" class="w-full h-full object-cover" loading="lazy" width="400" height="224">
                     @else
                     <div class="w-full h-full flex items-center justify-center text-gray-400">
                         <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">

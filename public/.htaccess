@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Redirect www to non-www
+    RewriteCond %{HTTP_HOST} ^www\.sulthanproperty\.com [NC]
+    RewriteRule ^(.*)$ https://sulthanproperty.com/$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -57,6 +61,12 @@
 </IfModule>
 
 <IfModule mod_headers.c>
+    # Security Headers
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
     # Cache static assets for 1 year
     <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|svg|js|css|swf|woff|woff2|otf|ttf)$">
         Header set Cache-Control "max-age=31536000, public"

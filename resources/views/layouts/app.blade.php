@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     {{-- SEO Meta Tags --}}
-    <title>@yield('title', 'Sulthan Property - Perumahan Berkualitas dengan Harga Terjangkau')</title>
-    <meta name="description" content="@yield('meta_description', 'Sulthan Property menyediakan perumahan berkualitas dengan lokasi strategis, harga terjangkau, dan nilai investasi tinggi.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'perumahan brebes, perumahan, perumahan di brebes, rumah dijual, properti, investasi properti, rumah murah, rumah KPR, developer properti')">
+    <title>@yield('title', 'Sulthan Property - Perumahan Murah & Subsidi di Brebes')</title>
+    <meta name="description" content="@yield('meta_description', 'Developer perumahan terpercaya di Brebes & Tegal. Menyediakan rumah subsidi & komersil berkualitas, lokasi strategis, DP ringan, dan cicilan mudah.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'perumahan brebes, perumahan subsidi brebes, rumah murah brebes, rumah dijual tegal, perumahan tegal, developer properti brebes, KPR rumah subsidi')">
     <meta name="author" content="Sulthan Property">
     <meta name="robots" content="index, follow">
     
@@ -22,6 +22,8 @@
     <meta property="og:title" content="@yield('og_title', 'Sulthan Property - Perumahan Berkualitas')">
     <meta property="og:description" content="@yield('og_description', 'Menyediakan perumahan berkualitas dengan lokasi strategis, harga terjangkau, dan nilai investasi tinggi.')">
     <meta property="og:image" content="@yield('og_image', asset('images/og-image.jpg'))">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="{{ url()->current() }}">
     
     {{-- Twitter Card --}}
@@ -39,14 +41,37 @@
         "@@context": "https://schema.org",
         "@@type": "RealEstateAgent",
         "name": "Sulthan Property",
-        "url": "https://sulthanproperty.com",
+        "url": "{{ url('/') }}",
         "logo": "{{ asset('favicon.svg') }}",
-        "description": "Developer properti yang menyediakan perumahan berkualitas dengan lokasi strategis, harga terjangkau, dan nilai investasi tinggi.",
+        "image": "{{ asset('images/og-image.jpg') }}",
+        "description": "Developer properti terpercaya di Brebes dan Tegal yang menyediakan perumahan subsidi dan komersil berkualitas dengan lokasi strategis, DP ringan, dan cicilan mudah.",
+        "telephone": "+6281280000000",
+        "priceRange": "Rp 160.000.000 - Rp 500.000.000",
         "address": {
             "@@type": "PostalAddress",
+            "streetAddress": "Jl. Pangeran Diponegoro Pesantunan",
+            "addressLocality": "Brebes",
+            "addressRegion": "Jawa Tengah",
+            "postalCode": "52212",
             "addressCountry": "ID"
         },
-        "sameAs": []
+        "geo": {
+            "@@type": "GeoCoordinates",
+            "latitude": -6.8694,
+            "longitude": 109.0453
+        },
+        "openingHoursSpecification": [
+            {
+                "@@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "08:00",
+                "closes": "17:00"
+            }
+        ],
+        "sameAs": [
+            "https://www.instagram.com/sulthanproperty/",
+            "https://www.tiktok.com/@sulthanproperty"
+        ]
     }
     </script>
     {{-- Google Fonts Preconnect and Lazy Load --}}
@@ -188,8 +213,8 @@
                 <div data-scroll="fade-up" data-scroll-delay="300">
                     <h4 class="text-lg font-semibold mb-4 text-white">Contact</h4>
                     <ul class="space-y-2 text-gray-300">
-                        <li>Email: hanaanjayaabadi@gmail.com</li>
-                        <li>Phone: +62 812-8000-0000</li>
+                        <li>Email: <a href="mailto:hanaanjayaabadi@gmail.com" class="hover:text-primary-400 transition"><!--email_off-->hanaanjayaabadi@gmail.com<!--/email_off--></a></li>
+                        <li>Phone: <a href="https://wa.me/6281280000000" target="_blank" rel="noopener noreferrer" class="hover:text-primary-400 transition">+62 812-8000-0000</a></li>
                     </ul>
                     {{-- Follow Us --}}
                     <div class="flex space-x-4 mt-4">
@@ -203,18 +228,6 @@
                         <a href="https://www.tiktok.com/@sulthanproperty" target="_blank" rel="noopener noreferrer" aria-label="TikTok Sulthan Property" class="w-10 h-10 bg-gray-800 hover:bg-black rounded-full flex items-center justify-center transition-all duration-300">
                             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                            </svg>
-                        </a>
-                        {{-- YouTube --}}
-                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube Sulthan Property" class="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-all duration-300">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
-                        </a>
-                        {{-- Facebook --}}
-                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook Sulthan Property" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                             </svg>
                         </a>
                     </div>

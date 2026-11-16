@@ -2,11 +2,24 @@
 
 User-agent: *
 Allow: /
+Allow: /storage/*.jpg
+Allow: /storage/*.jpeg
+Allow: /storage/*.png
+Allow: /storage/*.webp
+Allow: /storage/*.svg
+Disallow: /dashboard
+Disallow: /dashboard/*
 Disallow: /admin
 Disallow: /admin/*
 Disallow: /filament
 Disallow: /filament/*
-Disallow: /storage/
+
+# AI Search Assistants & Crawlers (GEO / AEO)
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
