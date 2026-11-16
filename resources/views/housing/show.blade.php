@@ -114,154 +114,7 @@
 
                 {{-- Site Plan --}}
                 @if(!empty($housing->siteplan_sip_id))
-                <div x-data="{
-                    loading: true,
-                    error: false,
-                    data: null,
-                    hoveredBlok: null,
-                    tooltip: { x: 0, y: 0 },
-                    imgDimensions: { width: 1700, height: 1002 },
-                    init() {
-                        fetch('https://sip.sulthanproperty.com/api/public/siteplan/{{ $housing->siteplan_sip_id }}')
-                            .then(res => {
-                                if (!res.ok) throw new Error('Network error: ' + res.status);
-                                return res.json();
-                            })
-                            .then(json => {
-                                this.data = json;
-                                this.loading = false;
-                                this.$nextTick(() => {
-                                    this.renderSvg();
-                                    this.attachEvents();
-                                });
-                            })
-                            .catch(err => {
-                                console.warn('Gagal memuat API SIP siteplan, fallback ke gambar statis:', err);
-                                this.error = true;
-                                this.loading = false;
-                            });
-                    },
-                    onImgLoad(e) {
-                        if (e.target.naturalWidth && e.target.naturalHeight) {
-                            this.imgDimensions = {
-                                width: e.target.naturalWidth,
-                                height: e.target.naturalHeight
-                            };
-                            this.renderSvg();
-                        }
-                    },
-                    pathToPoints(path) {
-                        if (!path) return '';
-                        const nums = path.match(/-?[\d.]+/g);
-                        if (!nums || nums.length < 8) return '';
-                        return `${nums[0]},${nums[1]} ${nums[2]},${nums[3]} ${nums[4]},${nums[5]} ${nums[6]},${nums[7]}`;
-                    },
-                    getCenter(path) {
-                        if (!path) return { x: 0, y: 0 };
-                        const nums = path.match(/-?[\d.]+/g);
-                        if (!nums || nums.length < 8) return { x: 0, y: 0 };
-                        return {
-                            x: (parseFloat(nums[0]) + parseFloat(nums[2]) + parseFloat(nums[4]) + parseFloat(nums[6])) / 4,
-                            y: (parseFloat(nums[1]) + parseFloat(nums[3]) + parseFloat(nums[5]) + parseFloat(nums[7])) / 4
-                        };
-                    },
-                    isWhite(color) {
-                        return !color || color.toLowerCase() === '#ffffff' || color.toLowerCase() === '#fff' || color.toLowerCase() === 'white';
-                    },
-                    hexToRgba(hex, alpha) {
-                        if (!hex) return `rgba(239, 68, 68, ${alpha})`;
-                        const clean = hex.replace('#', '');
-                        const r = parseInt(clean.substring(0, 2), 16) || 239;
-                        const g = parseInt(clean.substring(2, 4), 16) || 68;
-                        const b = parseInt(clean.substring(4, 6), 16) || 68;
-                        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-                    },
-                    renderSvg() {
-                        const svg = this.$refs.svgOverlay;
-                        if (!svg || !this.data || !this.data.bloks) return;
-
-                        const width = this.imgDimensions.width;
-                        const fontSize = Math.max(12, Math.round(width * 0.012));
-                        let html = '';
-
-                        this.data.bloks.forEach(blok => {
-                            const points = this.pathToPoints(blok.svg_path);
-                            if (!points) return;
-
-                            const isHovered = this.hoveredBlok && this.hoveredBlok.id === blok.id;
-                            const color = blok.status_warna || (blok.status_id === 1 ? '#ffffff' : '#ef4444');
-                            const isTersedia = this.isWhite(color);
-
-                            // Blok Booking diberi warna merah transparan (0.55), saat di-hover menjadi merah tegas (0.85)
-                            const fill = isHovered 
-                                ? (isTersedia ? 'rgba(255, 255, 255, 0.9)' : this.hexToRgba(color, 0.85))
-                                : (isTersedia ? 'rgba(255, 255, 255, 0.45)' : this.hexToRgba(color, 0.55));
-
-                            const stroke = isHovered ? '#0f172a' : (isTersedia ? '#94a3b8' : color);
-                            const strokeWidth = isHovered ? 2.5 : 1.5;
-                            const center = this.getCenter(blok.svg_path);
-
-                            html += `
-                                <g class="cursor-pointer" data-blok-id="${blok.id}">
-                                    <polygon points="${points}" 
-                                             fill="${fill}" 
-                                             stroke="${stroke}" 
-                                             stroke-width="${strokeWidth}" 
-                                             stroke-linejoin="round" 
-                                             style="transition: all 0.15s ease;" />
-                                    <text x="${center.x}" y="${center.y + (fontSize * 0.35)}" 
-                                          text-anchor="middle" 
-                                          font-weight="800" 
-                                          font-size="${fontSize}px" 
-                                          fill="#0f172a" 
-                                          style="font-family: inherit; paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; user-select: none;">
-                                        ${blok.nama}
-                                    </text>
-                                </g>
-                            `;
-                        });
-
-                        svg.innerHTML = html;
-                    },
-                    attachEvents() {
-                        const svg = this.$refs.svgOverlay;
-                        if (!svg) return;
-
-                        const handleEvent = (e) => {
-                            const group = e.target.closest('g[data-blok-id]');
-                            if (!group) {
-                                if (e.type === 'mouseleave') {
-                                    this.hoveredBlok = null;
-                                    this.renderSvg();
-                                }
-                                return;
-                            }
-                            const id = parseInt(group.getAttribute('data-blok-id'));
-                            const blok = this.data.bloks.find(b => b.id === id);
-                            if (blok && (!this.hoveredBlok || this.hoveredBlok.id !== blok.id)) {
-                                this.hoveredBlok = blok;
-                                this.renderSvg();
-                            }
-
-                            if (blok && this.$refs.siteplanContainer) {
-                                const rect = this.$refs.siteplanContainer.getBoundingClientRect();
-                                const clientX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
-                                const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
-                                this.tooltip = {
-                                    x: Math.min(Math.max(10, clientX - rect.left), rect.width - 220),
-                                    y: Math.max(10, clientY - rect.top - 100)
-                                };
-                            }
-                        };
-
-                        svg.addEventListener('mousemove', handleEvent);
-                        svg.addEventListener('mouseleave', handleEvent);
-                        svg.addEventListener('click', handleEvent);
-                        svg.addEventListener('touchstart', (e) => {
-                            if (e.touches && e.touches[0]) handleEvent(e.touches[0]);
-                        }, { passive: true });
-                    }
-                }" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
+                <div x-data="siteplanViewer('{{ $housing->siteplan_sip_id }}')" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
                     
                     {{-- Header & Legenda --}}
                     <div class="px-5 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 bg-gray-50/70">
@@ -411,3 +264,159 @@
     </div>
 </section>
 @endsection
+
+@if(!empty($housing->siteplan_sip_id))
+@push('scripts')
+<script>
+function siteplanViewer(sipId) {
+    return {
+        loading: true,
+        error: false,
+        data: null,
+        hoveredBlok: null,
+        tooltip: { x: 0, y: 0 },
+        imgDimensions: { width: 1700, height: 1002 },
+        init() {
+            fetch('https://sip.sulthanproperty.com/api/public/siteplan/' + sipId)
+                .then(res => {
+                    if (!res.ok) throw new Error('Network error: ' + res.status);
+                    return res.json();
+                })
+                .then(json => {
+                    this.data = json;
+                    this.loading = false;
+                    this.$nextTick(() => {
+                        this.renderSvg();
+                        this.attachEvents();
+                    });
+                })
+                .catch(err => {
+                    console.warn('Gagal memuat API SIP siteplan:', err);
+                    this.error = true;
+                    this.loading = false;
+                });
+        },
+        onImgLoad(e) {
+            if (e.target.naturalWidth && e.target.naturalHeight) {
+                this.imgDimensions = {
+                    width: e.target.naturalWidth,
+                    height: e.target.naturalHeight
+                };
+                this.renderSvg();
+            }
+        },
+        pathToPoints(path) {
+            if (!path) return '';
+            const nums = path.match(/-?[\d.]+/g);
+            if (!nums || nums.length < 8) return '';
+            return `${nums[0]},${nums[1]} ${nums[2]},${nums[3]} ${nums[4]},${nums[5]} ${nums[6]},${nums[7]}`;
+        },
+        getCenter(path) {
+            if (!path) return { x: 0, y: 0 };
+            const nums = path.match(/-?[\d.]+/g);
+            if (!nums || nums.length < 8) return { x: 0, y: 0 };
+            return {
+                x: (parseFloat(nums[0]) + parseFloat(nums[2]) + parseFloat(nums[4]) + parseFloat(nums[6])) / 4,
+                y: (parseFloat(nums[1]) + parseFloat(nums[3]) + parseFloat(nums[5]) + parseFloat(nums[7])) / 4
+            };
+        },
+        isWhite(color) {
+            return !color || color.toLowerCase() === '#ffffff' || color.toLowerCase() === '#fff' || color.toLowerCase() === 'white';
+        },
+        hexToRgba(hex, alpha) {
+            if (!hex) return `rgba(239, 68, 68, ${alpha})`;
+            const clean = hex.replace('#', '');
+            const r = parseInt(clean.substring(0, 2), 16) || 239;
+            const g = parseInt(clean.substring(2, 4), 16) || 68;
+            const b = parseInt(clean.substring(4, 6), 16) || 68;
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        },
+        renderSvg() {
+            const svg = this.$refs.svgOverlay;
+            if (!svg || !this.data || !this.data.bloks) return;
+
+            const width = this.imgDimensions.width;
+            const fontSize = Math.max(12, Math.round(width * 0.012));
+            let html = '';
+
+            this.data.bloks.forEach(blok => {
+                const points = this.pathToPoints(blok.svg_path);
+                if (!points) return;
+
+                const isHovered = this.hoveredBlok && this.hoveredBlok.id === blok.id;
+                const color = blok.status_warna || (blok.status_id === 1 ? '#ffffff' : '#ef4444');
+                const isTersedia = this.isWhite(color);
+
+                const fill = isHovered 
+                    ? (isTersedia ? 'rgba(255, 255, 255, 0.9)' : this.hexToRgba(color, 0.85))
+                    : (isTersedia ? 'rgba(255, 255, 255, 0.45)' : this.hexToRgba(color, 0.55));
+
+                const stroke = isHovered ? '#0f172a' : (isTersedia ? '#94a3b8' : color);
+                const strokeWidth = isHovered ? 2.5 : 1.5;
+                const center = this.getCenter(blok.svg_path);
+
+                html += `
+                    <g class="cursor-pointer" data-blok-id="${blok.id}">
+                        <polygon points="${points}" 
+                                 fill="${fill}" 
+                                 stroke="${stroke}" 
+                                 stroke-width="${strokeWidth}" 
+                                 stroke-linejoin="round" 
+                                 style="transition: all 0.15s ease;" />
+                        <text x="${center.x}" y="${center.y + (fontSize * 0.35)}" 
+                              text-anchor="middle" 
+                              font-weight="800" 
+                              font-size="${fontSize}px" 
+                              fill="#0f172a" 
+                              style="font-family: inherit; paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; user-select: none;">
+                            ${blok.nama}
+                        </text>
+                    </g>
+                `;
+            });
+
+            svg.innerHTML = html;
+        },
+        attachEvents() {
+            const svg = this.$refs.svgOverlay;
+            if (!svg) return;
+
+            const handleEvent = (e) => {
+                const group = e.target.closest('g[data-blok-id]');
+                if (!group) {
+                    if (e.type === 'mouseleave') {
+                        this.hoveredBlok = null;
+                        this.renderSvg();
+                    }
+                    return;
+                }
+                const id = parseInt(group.getAttribute('data-blok-id'));
+                const blok = this.data.bloks.find(b => b.id === id);
+                if (blok && (!this.hoveredBlok || this.hoveredBlok.id !== blok.id)) {
+                    this.hoveredBlok = blok;
+                    this.renderSvg();
+                }
+
+                if (blok && this.$refs.siteplanContainer) {
+                    const rect = this.$refs.siteplanContainer.getBoundingClientRect();
+                    const clientX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+                    const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
+                    this.tooltip = {
+                        x: Math.min(Math.max(10, clientX - rect.left), rect.width - 220),
+                        y: Math.max(10, clientY - rect.top - 100)
+                    };
+                }
+            };
+
+            svg.addEventListener('mousemove', handleEvent);
+            svg.addEventListener('mouseleave', handleEvent);
+            svg.addEventListener('click', handleEvent);
+            svg.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches[0]) handleEvent(e.touches[0]);
+            }, { passive: true });
+        }
+    };
+}
+</script>
+@endpush
+@endif
