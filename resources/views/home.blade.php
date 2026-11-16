@@ -723,18 +723,47 @@ document.addEventListener('DOMContentLoaded', function() {
         <div x-data="{ showSuccessModal: {{ session('success') ? 'true' : 'false' }} }">
             <form action="{{ route('contact.store') }}" method="POST" class="bg-white/60 backdrop-blur-2xl border border-white/60 p-8 md:p-12 rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] relative z-10" data-scroll="fade-up" data-scroll-delay="200">
                 @csrf
+
+                {{-- Honeypot anti-spam (disembunyikan dari manusia, diisi oleh bot) --}}
+                <div class="hidden" aria-hidden="true" style="display:none !important;">
+                    <label for="b_hp_field">Jangan isi bidang ini</label>
+                    <input type="text" id="b_hp_field" name="b_hp_field" tabindex="-1" autocomplete="off">
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                        <label for="name" class="block text-gray-700 font-semibold mb-2">Nama Lengkap *</label>
-                        <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" value="{{ old('name') }}">
+                        <label for="name" class="block text-gray-700 font-semibold mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" 
+                               id="name" 
+                               name="name" 
+                               required 
+                               minlength="3" 
+                               maxlength="100" 
+                               autocomplete="name" 
+                               placeholder="Contoh: Budi Santoso"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent @error('name') border-red-500 @enderror" 
+                               value="{{ old('name') }}">
                         @error('name')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="phone" class="block text-gray-700 font-semibold mb-2">No. WhatsApp</label>
-                        <input type="text" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" value="{{ old('phone') }}">
+                        <label for="phone" class="block text-gray-700 font-semibold mb-2">No. WhatsApp <span class="text-red-500">*</span></label>
+                        <input type="tel" 
+                               id="phone" 
+                               name="phone" 
+                               required 
+                               inputmode="numeric" 
+                               autocomplete="tel" 
+                               minlength="10" 
+                               maxlength="16" 
+                               pattern="^(\+?62|0)8[1-9][0-9]{7,11}$" 
+                               placeholder="Contoh: 081234567890" 
+                               title="Gunakan format nomor seluler Indonesia yang diawali 08 atau +628 (10-14 digit)"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent @error('phone') border-red-500 @enderror" 
+                               value="{{ old('phone') }}">
+                        <p class="text-xs text-gray-500 mt-1">Pastikan nomor aktif terdaftar di WhatsApp untuk pengiriman brosur.</p>
                         @error('phone')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -742,16 +771,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="mb-6">
-                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email *</label>
-                    <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" value="{{ old('email') }}">
+                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email <span class="text-red-500">*</span></label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           required 
+                           autocomplete="email" 
+                           placeholder="Contoh: budi@gmail.com"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent @error('email') border-red-500 @enderror" 
+                           value="{{ old('email') }}">
                     @error('email')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="mb-6">
-                    <label for="message" class="block text-gray-700 font-semibold mb-2">Pesan</label>
-                    <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">{{ old('message') }}</textarea>
+                    <label for="message" class="block text-gray-700 font-semibold mb-2">Pesan <span class="text-xs text-gray-500 font-normal">(Opsional)</span></label>
+                    <textarea id="message" 
+                              name="message" 
+                              rows="4" 
+                              maxlength="1000"
+                              placeholder="Tuliskan proyek perumahan yang Anda minati atau pertanyaan lainnya..."
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                     @error('message')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -779,7 +820,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <h3 class="text-2xl font-bold text-gray-900 text-center mb-4">Terima Kasih!</h3>
                     <p class="text-gray-700 text-center mb-6 leading-relaxed">
-                        Pesan kamu berhasi terkirim. Pastikan No. WhatsApp kamu sudah benar yaa.
+                        Pesan kamu berhasil terkirim. Pastikan No. WhatsApp kamu sudah benar yaa.
                         Kami akan kirim informasi selengkapnya ke WhatsApp kamu.
                     </p>
 
