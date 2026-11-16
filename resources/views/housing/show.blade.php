@@ -117,22 +117,30 @@
                 <div x-data="siteplanViewer('{{ $housing->siteplan_sip_id }}')" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
                     
                     {{-- Header & Legenda --}}
-                    <div class="px-5 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 bg-gray-50/70">
+                    <div class="px-5 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4 bg-white">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-900 leading-tight">Siteplan Interaktif Realtime</h2>
-                            <p class="text-xs text-gray-500">Kavling merah menandakan unit sudah terbooking</p>
+                            <div class="flex items-center gap-2">
+                                <span class="relative flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                </span>
+                                <h2 class="text-lg font-bold text-gray-900 leading-tight">Siteplan Interaktif</h2>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-0.5">Status ketersediaan unit terupdate realtime dari sistem SIP</p>
                         </div>
 
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center flex-wrap gap-2.5">
                             <template x-if="data && data.statusBloks">
                                 <div class="flex items-center gap-2">
                                     <template x-for="st in data.statusBloks" :key="st.id">
-                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border bg-white shadow-xs">
-                                            <span class="w-3 h-3 rounded-full border" 
-                                                  :style="{ backgroundColor: st.warna, borderColor: isWhite(st.warna) ? '#94a3b8' : st.warna }"></span>
-                                            <span x-text="st.nama" class="text-gray-700"></span>
+                                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border shadow-xs transition-all"
+                                             :class="isWhite(st.warna) ? 'bg-emerald-50/80 border-emerald-200 text-emerald-900' : 'bg-rose-50/80 border-rose-200 text-rose-900'">
+                                            <span class="w-2.5 h-2.5 rounded-full shadow-xs" 
+                                                  :class="isWhite(st.warna) ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-rose-500 ring-2 ring-rose-200'"></span>
+                                            <span x-text="st.nama" class="font-semibold tracking-wide"></span>
                                             <span x-show="data.stats && data.stats[st.id] !== undefined" 
-                                                  class="text-gray-900 font-bold ml-1 pl-1 border-l border-gray-200" 
+                                                  class="inline-flex items-center justify-center min-w-[22px] px-2 py-0.5 rounded-full text-[11px] font-black tracking-tight text-white shadow-xs"
+                                                  :class="isWhite(st.warna) ? 'bg-emerald-600' : 'bg-rose-600'"
                                                   x-text="data.stats[st.id]"></span>
                                         </div>
                                     </template>
@@ -142,10 +150,10 @@
                             <a href="https://sip.sulthanproperty.com/embed/siteplan/{{ $housing->siteplan_sip_id }}" 
                                target="_blank" 
                                rel="noopener noreferrer" 
-                               class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition"
+                               class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-primary-600 bg-gray-50 hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-full transition shadow-xs active:scale-95"
                                title="Buka tampilan penuh di tab baru">
                                 <span>Buka Penuh</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             </a>
                         </div>
                     </div>
