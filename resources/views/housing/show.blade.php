@@ -358,11 +358,6 @@
                     <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy" width="800" height="500">
                 </div>
                 @endif
-                @elseif($housing->site_plan)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-                    <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy" width="800" height="500">
-                </div>
-                @endif
             </div>
 
             {{-- Sidebar --}}
