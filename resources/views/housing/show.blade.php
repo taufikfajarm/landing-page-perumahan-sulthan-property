@@ -114,15 +114,157 @@
 
                 {{-- Site Plan --}}
                 @if(!empty($housing->siteplan_sip_id))
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 w-full" style="height: 85vh; min-height: 600px;">
-                    <iframe 
-                        src="https://sip.sulthanproperty.com/embed/siteplan/{{ $housing->siteplan_sip_id }}" 
-                        width="100%" 
-                        height="100%" 
-                        style="border: none;" 
-                        loading="lazy"
-                        title="Siteplan Realtime {{ $housing->name }}"
-                    ></iframe>
+                <div x-data="{
+                    loading: true,
+                    error: false,
+                    data: null,
+                    hoveredBlok: null,
+                    tooltip: { x: 0, y: 0 },
+                    imgDimensions: { width: 1920, height: 1080 },
+                    init() {
+                        fetch('https://sip.sulthanproperty.com/api/public/siteplan/{{ $housing->siteplan_sip_id }}')
+                            .then(res => {
+                                if (!res.ok) throw new Error('Network error');
+                                return res.json();
+                            })
+                            .then(json => {
+                                this.data = json;
+                                this.loading = false;
+                            })
+                            .catch(err => {
+                                console.warn('Gagal memuat API SIP siteplan, fallback ke gambar statis:', err);
+                                this.error = true;
+                                this.loading = false;
+                            });
+                    },
+                    onImgLoad(e) {
+                        this.imgDimensions = {
+                            width: e.target.naturalWidth || 1920,
+                            height: e.target.naturalHeight || 1080
+                        };
+                    },
+                    onHover(e, blok) {
+                        this.hoveredBlok = blok;
+                        const rect = this.$refs.siteplanContainer.getBoundingClientRect();
+                        this.tooltip = {
+                            x: Math.min(Math.max(10, e.clientX - rect.left), rect.width - 200),
+                            y: Math.max(10, e.clientY - rect.top - 80)
+                        };
+                    },
+                    getFill(blok) {
+                        if (this.hoveredBlok && this.hoveredBlok.id === blok.id) {
+                            return blok.status_warna ? blok.status_warna : 'rgba(239, 68, 68, 0.85)';
+                        }
+                        const isTersedia = blok.status_id === 1 || blok.status_nama?.toLowerCase() === 'tersedia';
+                        return isTersedia ? 'rgba(255, 255, 255, 0.65)' : 'rgba(239, 68, 68, 0.65)';
+                    },
+                    getStroke(blok) {
+                        if (this.hoveredBlok && this.hoveredBlok.id === blok.id) {
+                            return '#0f172a';
+                        }
+                        const isTersedia = blok.status_id === 1 || blok.status_nama?.toLowerCase() === 'tersedia';
+                        return isTersedia ? '#059669' : '#b91c1c';
+                    }
+                }" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
+                    
+                    {{-- Header & Legenda --}}
+                    <div class="px-5 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 bg-gray-50/70">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900 leading-tight">Siteplan Interaktif</h2>
+                            <p class="text-xs text-gray-500">Arahkan kursor atau sentuh kavling untuk melihat ketersediaan unit</p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <template x-if="data && data.statusBloks">
+                                <div class="flex items-center gap-2">
+                                    <template x-for="st in data.statusBloks" :key="st.id">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border bg-white shadow-xs">
+                                            <span class="w-3 h-3 rounded-full border" :style="{ backgroundColor: st.warna, borderColor: '#cbd5e1' }"></span>
+                                            <span x-text="st.nama" class="text-gray-700"></span>
+                                            <span x-show="data.stats && data.stats[st.id] !== undefined" class="text-gray-900 font-bold ml-1 pl-1 border-l border-gray-200" x-text="data.stats[st.id]"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <a href="https://sip.sulthanproperty.com/embed/siteplan/{{ $housing->siteplan_sip_id }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition"
+                               title="Buka tampilan penuh di tab baru">
+                                <span>Buka Penuh</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Container Area Siteplan --}}
+                    <div ref="siteplanContainer" class="relative w-full overflow-hidden bg-gray-900 flex items-center justify-center min-h-[450px]">
+                        {{-- Loading Spinner --}}
+                        <div x-show="loading" class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-20">
+                            <div class="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+                            <span class="text-sm font-medium text-gray-600">Memuat denah siteplan realtime...</span>
+                        </div>
+
+                        {{-- Fallback Gambar jika Error API --}}
+                        <div x-show="error && !loading" class="w-full">
+                            @if($housing->site_plan)
+                            <img src="{{ get_image_url($housing->site_plan) }}" alt="Site Plan {{ $housing->name }}" class="w-full h-auto" loading="lazy">
+                            @else
+                            <div class="p-12 text-center text-gray-500">
+                                Gambar site plan belum tersedia.
+                            </div>
+                            @endif
+                        </div>
+
+                        {{-- Realtime Interactive SVG Canvas --}}
+                        <div x-show="!loading && !error && data" class="relative w-full">
+                            <template x-if="data && data.proyek && data.proyek.siteplan">
+                                <img :src="data.proyek.siteplan" 
+                                     alt="Site Plan {{ $housing->name }}" 
+                                     class="w-full h-auto block select-none pointer-events-none"
+                                     @load="onImgLoad($event)">
+                            </template>
+
+                            {{-- SVG Polygon Layer --}}
+                            <template x-if="data && data.bloks">
+                                <svg :viewBox="`0 0 ${imgDimensions.width} ${imgDimensions.height}`" 
+                                     class="absolute inset-0 w-full h-full pointer-events-auto">
+                                    <template x-for="blok in data.bloks" :key="blok.id">
+                                        <path :d="blok.svg_path" 
+                                              :fill="getFill(blok)" 
+                                              :stroke="getStroke(blok)" 
+                                              stroke-width="2" 
+                                              stroke-linejoin="round"
+                                              class="cursor-pointer transition-colors duration-150"
+                                              @mouseenter="onHover($event, blok)"
+                                              @mousemove="onHover($event, blok)"
+                                              @mouseleave="hoveredBlok = null"
+                                              @click="onHover($event, blok)"></path>
+                                    </template>
+                                </svg>
+                            </template>
+
+                            {{-- Hover Tooltip Card --}}
+                            <div x-show="hoveredBlok" 
+                                 x-cloak
+                                 class="absolute z-30 pointer-events-none bg-white/95 backdrop-blur-md border shadow-2xl rounded-xl p-3 min-w-[150px] transition-all duration-75 text-left"
+                                 :style="`left: ${tooltip.x}px; top: ${tooltip.y}px; border-color: ${hoveredBlok?.status_warna || '#e2e8f0'};`">
+                                <div class="flex items-center justify-between gap-2 mb-1">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Kavling</span>
+                                    <span class="w-2 h-2 rounded-full" :style="`background-color: ${hoveredBlok?.status_warna || '#94a3b8'};`"></span>
+                                </div>
+                                <div class="text-xl font-extrabold text-gray-900 leading-none mb-1.5" x-text="hoveredBlok?.nama"></div>
+                                <div class="inline-block px-2 py-0.5 rounded text-[11px] font-bold text-white mb-2"
+                                     :style="`background-color: ${hoveredBlok?.status_warna || '#ef4444'};`"
+                                     x-text="hoveredBlok?.status_nama"></div>
+                                <div class="text-xs text-gray-600 border-t border-gray-100 pt-1.5 flex justify-between">
+                                    <span>Tipe:</span>
+                                    <span class="font-bold text-gray-800" x-text="hoveredBlok?.tipe || '-'"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @elseif($housing->site_plan)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
