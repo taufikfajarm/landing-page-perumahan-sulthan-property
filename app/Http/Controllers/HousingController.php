@@ -21,11 +21,17 @@ class HousingController extends Controller
 
     public function show($slug)
     {
-        $housing = Cache::rememberForever("housing_show_{$slug}", function () use ($slug) {
-            return Housing::where('slug', $slug)->with(['types', 'facilities', 'accessPoints'])->firstOrFail();
+        $housing = Cache::remember("housing_show_{$slug}", 3600, function () use ($slug) {
+            return Housing::where('slug', $slug)
+                ->with(['types.installmentPlans', 'types.bankPartners', 'facilities', 'accessPoints'])
+                ->firstOrFail();
+        });
+
+        $marketings = Cache::remember('active_marketings_sidebar', 3600, function () {
+            return \App\Models\Marketing::active()->ordered()->take(3)->get();
         });
         
-        return view('housing.show', compact('housing'));
+        return view('housing.show', compact('housing', 'marketings'));
     }
 
     public function showType($housingSlug, $typeSlug)

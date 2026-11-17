@@ -9,6 +9,8 @@ class Housing extends Model
     protected $fillable = [
         'name',
         'slug',
+        'developer_name',
+        'certificate_type',
         'location',
         'location_url',
         'latitude',
@@ -21,11 +23,31 @@ class Housing extends Model
         'is_featured',
         'site_plan',
         'siteplan_sip_id',
+        'brochure_file',
+        'video_url',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
     ];
+
+    protected static function booted()
+    {
+        static::saved(function ($housing) {
+            \Illuminate\Support\Facades\Cache::forget('housing_index');
+            \Illuminate\Support\Facades\Cache::forget("housing_show_{$housing->slug}");
+            \Illuminate\Support\Facades\Cache::forget("housing_slug_{$housing->slug}");
+        });
+
+        static::deleted(function ($housing) {
+            \Illuminate\Support\Facades\Cache::forget('housing_index');
+            \Illuminate\Support\Facades\Cache::forget("housing_show_{$housing->slug}");
+            \Illuminate\Support\Facades\Cache::forget("housing_slug_{$housing->slug}");
+        });
+    }
 
     // Relationships
     public function types()
