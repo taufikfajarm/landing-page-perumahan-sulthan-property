@@ -13,45 +13,37 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $tag = $request->get('tag');
-        $page = $request->get('page', 1);
-        $cacheKey = "blog_index_tag_" . ($tag ?? 'all') . "_page_" . $page;
-
-        $blogs = Cache::rememberForever($cacheKey, function () use ($tag) {
-            $query = Blog::published()->latest('published_at');
-            
-            // Filter by tag if provided
-            if ($tag) {
-                $query->where('meta_keywords', 'LIKE', '%' . $tag . '%');
-            }
-            
-            return $query->paginate(6);
-        });
+        $query = Blog::published()->latest('published_at');
+        
+        // Filter by tag if provided
+        if ($tag) {
+            $query->where('meta_keywords', 'LIKE', '%' . $tag . '%');
+        }
+        
+        $blogs = $query->paginate(6);
         
         return view('blog.index', compact('blogs'));
     }
 
     public function show($slug)
     {
-        $blog = Cache::rememberForever("blog_show_{$slug}", function () use ($slug) {
-            return Blog::where('slug', $slug)
-                       ->where('is_published', true)
-                       ->firstOrFail();
-        });
+        $blog = Blog::where('slug', $slug)
+                   ->where('is_published', true)
+                   ->firstOrFail();
         
-        // Increment view counter (this updates DB directly, and our observer will ignore it from clearing cache)
+        // Increment view counter
         $blog->incrementViews();
+        $blog->views += 1;
         
         // Get related posts
-        $relatedBlogs = Cache::rememberForever("blog_related_to_{$blog->id}", function () use ($blog) {
-            return Blog::published()
-                       ->where('id', '!=', $blog->id)
-                       ->latest('published_at')
-                       ->take(3)
-                       ->get();
-        });
+        $relatedBlogs = Blog::published()
+                   ->where('id', '!=', $blog->id)
+                   ->latest('published_at')
+                   ->take(3)
+                   ->get();
         
         // Get random active ad from cache
-        $ads = Cache::rememberForever('active_blog_ads', function () {
+        $ads = Cache::remember('active_blog_ads', 300, function () {
             return BlogAd::active()
                         ->with(['housing', 'marketing'])
                         ->get();

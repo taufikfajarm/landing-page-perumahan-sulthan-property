@@ -28,9 +28,7 @@ class HomeController extends Controller
             return Testimonial::active()->get();
         });
 
-        $recentBlogs = Cache::rememberForever('home_recent_blogs', function () {
-            return Blog::published()->latest('published_at')->take(3)->get();
-        });
+        $recentBlogs = Blog::published()->latest('published_at')->take(3)->get();
 
         $surveyLokasi = Cache::rememberForever('home_survey_lokasi', function () {
             return SurveyLokasi::active()->with('images')->first();
