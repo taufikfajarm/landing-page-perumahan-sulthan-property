@@ -20,6 +20,7 @@ class ContactsTable
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->modifyQueryUsing(fn ($query) => $query->latest('created_at')->latest('id'))
             ->recordAction(ViewAction::class)
             ->columns([
                 TextColumn::make('name')

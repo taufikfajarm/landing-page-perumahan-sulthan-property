@@ -66,3 +66,4 @@ class ContactNotificationBadgeTest extends TestCase
         $this->assertFalse($contact->is_read);
     }
 }
+
