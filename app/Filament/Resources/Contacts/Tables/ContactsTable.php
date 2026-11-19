@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Contacts\Tables;
 
 use App\Models\Contact;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -68,39 +69,49 @@ class ContactsTable
                     ->falseLabel('Belum Dilihat (Baru)'),
             ])
             ->recordActions([
-                ViewAction::make()
-                    ->label('Lihat Pesan')
-                    ->modalHeading(fn (Contact $record) => 'Detail Pesan: ' . $record->name)
-                    ->beforeFormFilled(function (Contact $record) {
-                        if (! $record->is_read) {
-                            $record->markAsRead();
-                        }
-                    })
-                    ->mutateRecordDataUsing(function (array $data, Contact $record): array {
-                        if (! $record->is_read) {
-                            $record->markAsRead();
-                        }
-                        $data['is_read'] = true;
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->label('Lihat Detail Pesan')
+                        ->icon('heroicon-o-eye')
+                        ->modalHeading(fn (Contact $record) => 'Detail Pesan: ' . $record->name)
+                        ->beforeFormFilled(function (Contact $record) {
+                            if (! $record->is_read) {
+                                $record->markAsRead();
+                            }
+                        })
+                        ->mutateRecordDataUsing(function (array $data, Contact $record): array {
+                            if (! $record->is_read) {
+                                $record->markAsRead();
+                            }
+                            $data['is_read'] = true;
 
-                        return $data;
-                    }),
+                            return $data;
+                        }),
 
-                Action::make('markAsRead')
-                    ->label('Tandai Dilihat')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->visible(fn (Contact $record) => ! $record->is_read)
-                    ->action(fn (Contact $record) => $record->markAsRead()),
+                    Action::make('markAsRead')
+                        ->label('Tandai Sudah Dilihat')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->visible(fn (Contact $record) => ! $record->is_read)
+                        ->action(fn (Contact $record) => $record->markAsRead()),
 
-                Action::make('markAsUnread')
-                    ->label('Tandai Belum Dilihat')
-                    ->icon('heroicon-o-envelope')
-                    ->color('warning')
-                    ->visible(fn (Contact $record) => $record->is_read)
-                    ->action(fn (Contact $record) => $record->update(['is_read' => false])),
+                    Action::make('markAsUnread')
+                        ->label('Tandai Belum Dilihat')
+                        ->icon('heroicon-o-envelope')
+                        ->color('warning')
+                        ->visible(fn (Contact $record) => $record->is_read)
+                        ->action(fn (Contact $record) => $record->update(['is_read' => false])),
 
-                EditAction::make(),
-                DeleteAction::make(),
+                    EditAction::make()
+                        ->label('Ubah / Edit')
+                        ->icon('heroicon-o-pencil-square'),
+
+                    DeleteAction::make()
+                        ->label('Hapus Pesan')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Pilihan Aksi'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
