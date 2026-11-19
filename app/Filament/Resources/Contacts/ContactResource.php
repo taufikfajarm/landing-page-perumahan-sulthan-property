@@ -22,6 +22,25 @@ class ContactResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $navigationLabel = 'Contacts';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $unreadCount = static::getModel()::where('is_read', false)->count();
+
+        return $unreadCount > 0 ? (string) $unreadCount : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'danger';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Pesan belum dilihat';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ContactForm::configure($schema);

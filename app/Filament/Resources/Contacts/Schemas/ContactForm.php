@@ -14,18 +14,26 @@ class ContactForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama Pengirim')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Alamat Email')
                     ->email()
                     ->required(),
                 TextInput::make('phone')
-                    ->tel(),
-                Textarea::make('message')
-                    ->required()
-                    ->columnSpanFull(),
-                Toggle::make('is_read')
+                    ->label('Nomor WhatsApp / HP')
+                    ->tel()
                     ->required(),
+                Toggle::make('is_read')
+                    ->label('Sudah Dilihat')
+                    ->helperText('Status otomatis aktif saat detail pesan dibuka')
+                    ->default(false)
+                    ->required(),
+                Textarea::make('message')
+                    ->label('Isi Pesan')
+                    ->required()
+                    ->rows(6)
+                    ->columnSpanFull(),
             ]);
     }
 }

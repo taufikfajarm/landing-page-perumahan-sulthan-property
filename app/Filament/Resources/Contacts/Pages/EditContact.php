@@ -16,4 +16,13 @@ class EditContact extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    public function mount(int | string $record): void
+    {
+        parent::mount($record);
+
+        if (! $this->record->is_read) {
+            $this->record->markAsRead();
+        }
+    }
 }
