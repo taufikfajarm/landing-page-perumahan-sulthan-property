@@ -1,154 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://sulthanproperty.test:8080/</loc>
+    <loc>https://sulthanproperty.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/images/og-image.jpg</image:loc>
+    <image:caption>Sulthan Property - Perumahan Murah &amp; Subsidi di Brebes</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Sulthan Property</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/perumahan</loc>
+    <loc>https://sulthanproperty.com/perumahan</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/images/og-image.jpg</image:loc>
+    <image:caption>Daftar Perumahan di Brebes &amp; Tegal</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Pilihan Perumahan Brebes</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/marketing</loc>
+    <loc>https://sulthanproperty.com/marketing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog</loc>
+    <loc>https://sulthanproperty.com/blog</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/about</loc>
+    <loc>https://sulthanproperty.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-gaji-kecil-bisa-beli-rumah</loc>
+    <loc>https://sulthanproperty.com/blog/tips-gaji-kecil-bisa-beli-rumah</loc>
     <lastmod>2025-12-16T02:56:18+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJGGZA6WQKT0TK9B1EX21FJ.webp</image:loc>
+    <image:caption>Tips Gaji Kecil Bisa Beli Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Gaji Kecil Bisa Beli Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-membuat-rumah-tangga-harmonis</loc>
+    <loc>https://sulthanproperty.com/blog/tips-membuat-rumah-tangga-harmonis</loc>
     <lastmod>2025-12-16T03:29:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJK9TW8R26KWVN21872M7QW.webp</image:loc>
+    <image:caption>Tips Membuat Rumah Tangga Harmonis</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Membuat Rumah Tangga Harmonis</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-agar-pengajuan-kpr-disetujui-bank-dengan-mudah</loc>
+    <loc>https://sulthanproperty.com/blog/tips-agar-pengajuan-kpr-disetujui-bank-dengan-mudah</loc>
     <lastmod>2025-12-16T03:36:48+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJKPSH04KXRRN5X8BD9R5EC.webp</image:loc>
+    <image:caption>Tips Agar Pengajuan KPR disetujui Bank dengan Mudah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Agar Pengajuan KPR disetujui Bank dengan Mudah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/keuntungan-memiliki-hunian-di-dekat-akses-tol</loc>
+    <loc>https://sulthanproperty.com/blog/keuntungan-memiliki-hunian-di-dekat-akses-tol</loc>
     <lastmod>2025-12-16T03:41:55+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJM05RX8FNDVES2GZTVY9PF.webp</image:loc>
+    <image:caption>Keuntungan Memiliki Hunian di Dekat Akses Tol</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Keuntungan Memiliki Hunian di Dekat Akses Tol</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-menata-interior-rumah</loc>
+    <loc>https://sulthanproperty.com/blog/tips-menata-interior-rumah</loc>
     <lastmod>2025-12-16T03:48:29+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJMC683GJQ3FH60HDMBFDGG.webp</image:loc>
+    <image:caption>Tips Menata Interior Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Menata Interior Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/penyebab-usia-tua-belum-punya-rumah</loc>
+    <loc>https://sulthanproperty.com/blog/penyebab-usia-tua-belum-punya-rumah</loc>
     <lastmod>2025-12-16T04:01:57+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJN4VDQ67RQZ15WSKJ5NHV3.webp</image:loc>
+    <image:caption>Penyebab Usia Tua Belum Punya Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Penyebab Usia Tua Belum Punya Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-menabung-untuk-membeli-rumah-panduan-lengkap-menuju-kepemilikan-hunian-impian</loc>
+    <loc>https://sulthanproperty.com/blog/tips-menabung-untuk-membeli-rumah-panduan-lengkap-menuju-kepemilikan-hunian-impian</loc>
     <lastmod>2025-12-16T04:21:57+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJP884TB6WYPXMWCPAYS0SC.webp</image:loc>
+    <image:caption>Tips Menabung untuk Membeli Rumah: Panduan Lengkap Menuju Kepemilikan Hunian Impian</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Menabung untuk Membeli Rumah: Panduan Lengkap Menuju Kepemilikan Hunian Impian</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/cara-pintar-dapat-untung-besar-dari-investasi-rumah</loc>
+    <loc>https://sulthanproperty.com/blog/cara-pintar-dapat-untung-besar-dari-investasi-rumah</loc>
     <lastmod>2025-12-16T04:29:31+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJPQA73590Q8DP1B9RQFKX0.webp</image:loc>
+    <image:caption>Cara Pintar Dapat Untung Besar Dari Investasi Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Cara Pintar Dapat Untung Besar Dari Investasi Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/keuntungan-memiliki-rumah-dekat-pusat-kota</loc>
+    <loc>https://sulthanproperty.com/blog/keuntungan-memiliki-rumah-dekat-pusat-kota</loc>
     <lastmod>2025-12-16T04:40:36+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJQBKEFJ07GXSVQE946TKCV.webp</image:loc>
+    <image:caption>Keuntungan Memiliki Rumah Dekat Pusat Kota</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Keuntungan Memiliki Rumah Dekat Pusat Kota</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-menghindari-penipuan-dalam-pembelian-rumah</loc>
+    <loc>https://sulthanproperty.com/blog/tips-menghindari-penipuan-dalam-pembelian-rumah</loc>
     <lastmod>2025-12-16T04:50:16+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJQWMV3P1CCE5BN9FFJDZGX.webp</image:loc>
+    <image:caption>Tips Menghindari Penipuan dalam Pembelian Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Menghindari Penipuan dalam Pembelian Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/faktor-penyebab-pengajuan-kpr-ditolak</loc>
+    <loc>https://sulthanproperty.com/blog/faktor-penyebab-pengajuan-kpr-ditolak</loc>
     <lastmod>2025-12-16T13:21:06+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJX3M30EZZES68PGGB4M6S6.webp</image:loc>
+    <image:caption>Faktor Penyebab Pengajuan KPR Ditolak</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Faktor Penyebab Pengajuan KPR Ditolak</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-merawat-rumah-agar-bersih-dan-nyaman</loc>
+    <loc>https://sulthanproperty.com/blog/tips-merawat-rumah-agar-bersih-dan-nyaman</loc>
     <lastmod>2025-12-16T13:23:42+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJX8CJWWZT9K7VEWV70577M.webp</image:loc>
+    <image:caption>Tips Merawat Rumah Agar Bersih dan Nyaman</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Merawat Rumah Agar Bersih dan Nyaman</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tata-cara-pelaksanaan-akad-kredit-pembelian-rumah</loc>
-    <lastmod>2025-12-16T13:26:38+07:00</lastmod>
+    <loc>https://sulthanproperty.com/blog/tata-cara-pelaksanaan-akad-kredit-pembelian-rumah</loc>
+    <lastmod>2026-03-27T15:11:03+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJXDRH13T2MENZ5CDQDKWAS.webp</image:loc>
+    <image:caption>Tata Cara Pelaksanaan Akad Kredit Pembelian Rumah</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tata Cara Pelaksanaan Akad Kredit Pembelian Rumah</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/ide-kreatif-untuk-dekorasi-ruang-tamu-minimalis</loc>
+    <loc>https://sulthanproperty.com/blog/ide-kreatif-untuk-dekorasi-ruang-tamu-minimalis</loc>
     <lastmod>2025-12-17T17:04:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJXH00MPHD02CYX1NE6PDV3.webp</image:loc>
+    <image:caption>Ide Kreatif untuk Dekorasi Ruang Tamu Minimalis</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Ide Kreatif untuk Dekorasi Ruang Tamu Minimalis</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-renovasi-rumah-dengan-budget-minim</loc>
+    <loc>https://sulthanproperty.com/blog/tips-renovasi-rumah-dengan-budget-minim</loc>
     <lastmod>2025-12-17T17:02:21+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJXMASFA152SMDKQS2EXGHG.webp</image:loc>
+    <image:caption>Tips Renovasi Rumah dengan Budget Minim</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Renovasi Rumah dengan Budget Minim</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/beli-rumah-vs-ngontrak-pilih-mana-yang-tepat-untuk-masa-depan-anda</loc>
-    <lastmod>2025-12-17T16:59:41+07:00</lastmod>
+    <loc>https://sulthanproperty.com/blog/beli-rumah-vs-ngontrak-pilih-mana-yang-tepat-untuk-masa-depan-anda</loc>
+    <lastmod>2026-03-28T09:18:18+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJY179D0AJ7H3136SERWCDK.webp</image:loc>
+    <image:caption>Beli Rumah vs Ngontrak: Pilih Mana yang Tepat untuk Masa Depan Anda?</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Beli Rumah vs Ngontrak: Pilih Mana yang Tepat untuk Masa Depan Anda?</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/blog/tips-membeli-rumah-subsidi</loc>
-    <lastmod>2025-12-17T16:59:09+07:00</lastmod>
+    <loc>https://sulthanproperty.com/blog/tips-membeli-rumah-subsidi</loc>
+    <lastmod>2026-03-27T14:27:58+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/blog-images/01KCJYA6THMC0EFTH130EJ55HY.webp</image:loc>
+    <image:caption>Tips Membeli Rumah Subsidi</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tips Membeli Rumah Subsidi</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/perumahan/almaz-de-mansion</loc>
-    <lastmod>2025-12-20T11:36:40+07:00</lastmod>
+    <loc>https://sulthanproperty.com/perumahan/almaz-de-mansion</loc>
+    <lastmod>2026-11-17T14:18:31+07:00</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
+    <priority>0.9</priority>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/housing-images/01KC0G8NAYFY93J6DGXFQYMAKE.jpg</image:loc>
+    <image:caption>Almaz de Mansion - Jl. Pangeran Diponegoro Pesantunan Brebes</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Almaz de Mansion</image:title>
+</image:image>
+<image:image>
+    <image:loc>https://sulthanproperty.com/storage/site-plans/01KC0G8NB6T50MFH5N4NZXSFCT.jpg</image:loc>
+    <image:caption>Siteplan Almaz de Mansion</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Siteplan Almaz de Mansion</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/perumahan/almaz-de-mansion/3060-subsidi</loc>
+    <loc>https://sulthanproperty.com/perumahan/almaz-de-mansion/3060-subsidi</loc>
     <lastmod>2025-12-09T03:30:16+07:00</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/gallery/01KC0JHSBMMDXK1E6HZ1JGX560.jpg</image:loc>
+    <image:caption>Almaz de Mansion - Tipe 30/60 (Subsidi)</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tipe 30/60 (Subsidi)</image:title>
+</image:image>
+        </url>
     <url>
-    <loc>http://sulthanproperty.test:8080/perumahan/almaz-de-mansion/4574</loc>
+    <loc>https://sulthanproperty.com/perumahan/almaz-de-mansion/4574</loc>
     <lastmod>2025-12-09T04:10:01+07:00</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://sulthanproperty.test:8080/perumahan/pagejugan-land</loc>
-    <lastmod>2025-12-09T03:11:58+07:00</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-            </url>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/floor-plans/01KC0MTJRT1MMGAZQ096H3V7DE.jpg</image:loc>
+    <image:caption>Almaz de Mansion - Tipe 45/74</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Tipe 45/74</image:title>
+</image:image>
+        </url>
+    <url>
+    <loc>https://sulthanproperty.com/perumahan/pagejugan-land</loc>
+    <lastmod>2026-07-23T13:00:59+07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/housing-images/01KC0GS9647MSFKK2NW7G5KBZ1.png</image:loc>
+    <image:caption>Pagejugan Land - Jl. Proklamasi Brebes</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Pagejugan Land</image:title>
+</image:image>
+<image:image>
+    <image:loc>https://sulthanproperty.com/storage/site-plans/01KC0HG96JKHK9T7SWSYD33NC2.jpg</image:loc>
+    <image:caption>Siteplan Pagejugan Land</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Siteplan Pagejugan Land</image:title>
+</image:image>
+        </url>
+    <url>
+    <loc>https://sulthanproperty.com/perumahan/grand-sulthan</loc>
+    <lastmod>2026-07-23T13:14:07+07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/housing-images/01KY6SR8S513E8H8FD4BRCY5AZ.jpg</image:loc>
+    <image:caption>Grand Sulthan - Jl. Proklamasi Brebes</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Grand Sulthan</image:title>
+</image:image>
+        </url>
+    <url>
+    <loc>https://sulthanproperty.com/perumahan/sulthan-residence</loc>
+    <lastmod>2026-07-23T13:15:59+07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+    <image:loc>https://sulthanproperty.com/storage/housing-images/01KY6SVNB59DKQPC4PV0MN4KXJ.jpg</image:loc>
+    <image:caption>Sulthan Residence - Jl Krasak - Lembarawa Brebes</image:caption>
+    <image:geo_location>Brebes, Jawa Tengah</image:geo_location>
+    <image:title>Sulthan Residence</image:title>
+</image:image>
+        </url>
 </urlset>

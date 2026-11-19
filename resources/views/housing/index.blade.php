@@ -1,16 +1,60 @@
 @extends('layouts.app')
 
-@section('title', 'Pilihan Perumahan - Sulthan Property')
-@section('meta_description', 'Brosur dan pilihan perumahan dari Sulthan Property. Temukan rumah impian Anda dengan harga terbaik, desain modern, dan fasilitas lengkap.')
-@section('meta_keywords', 'pilihan perumahan, rumah modern, perumahan murah, jual rumah, sulthan property, beli perumahan baru')
-@section('og_title', 'Pilihan Perumahan - Sulthan Property')
-@section('og_description', 'Brosur dan pilihan perumahan dari Sulthan Property. Temukan rumah impian Anda dengan harga terbaik, desain modern, dan fasilitas lengkap.')
+@section('title', 'Perumahan di Brebes - Pilihan Rumah Murah & Subsidi | Sulthan Property')
+@section('meta_description', 'Katalog perumahan murah, rumah subsidi FLPP, dan hunian komersil di Brebes & Tegal. Angsuran flat mulai 1 jutaan/bulan, sertifikat SHM & PBG, lokasi strategis bebas banjir.')
+@section('meta_keywords', 'perumahan di brebes, perumahan brebes, rumah subsidi brebes, rumah murah brebes, kpr flpp brebes, developer brebes, sulthan property')
+@section('og_title', 'Perumahan di Brebes - Pilihan Rumah Murah & Subsidi | Sulthan Property')
+@section('og_description', 'Katalog lengkap perumahan subsidi dan komersil berkualitas di Brebes & Tegal. Cicilan mulai 1 jutaan, SHM resmi, siap huni.')
+@section('og_image', asset('images/og-image.jpg'))
+@section('twitter_image', asset('images/og-image.jpg'))
+
+@push('seo')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "ItemList",
+    "name": "Daftar Perumahan di Brebes - Sulthan Property",
+    "itemListElement": [
+        @foreach($housings as $index => $housing)
+        {
+            "@@type": "ListItem",
+            "position": {{ $index + 1 }},
+            "name": "{{ $housing->name }}",
+            "url": "{{ route('housing.show', $housing->slug) }}",
+            "image": "{{ $housing->featured_image ? get_image_url($housing->featured_image) : asset('images/og-image.jpg') }}",
+            "description": "{{ Str::limit(strip_tags($housing->description), 150) }}"
+        }{{ !$loop->last ? ',' : '' }}
+        @endforeach
+    ]
+}
+</script>
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@@type": "ListItem",
+            "position": 1,
+            "name": "Beranda",
+            "item": "{{ url('/') }}"
+        },
+        {
+            "@@type": "ListItem",
+            "position": 2,
+            "name": "Perumahan Brebes",
+            "item": "{{ route('housing.index') }}"
+        }
+    ]
+}
+</script>
+@endpush
 
 @section('content')
 <div class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-bold mb-2">Pilihan Perumahan</h1>
-        <p class="text-primary-100">Temukan rumah impian Anda</p>
+        <h1 class="text-4xl font-bold mb-2">Pilihan Perumahan di Brebes &amp; Sekitarnya</h1>
+        <p class="text-primary-100">Katalog hunian subsidi FLPP dan perumahan komersil berkualitas dengan lokasi strategis dan DP ringan</p>
     </div>
 </div>
 

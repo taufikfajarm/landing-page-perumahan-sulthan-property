@@ -10,7 +10,7 @@
     <meta name="description" content="@yield('meta_description', 'Developer perumahan terpercaya di Brebes & Tegal. Menyediakan rumah subsidi & komersil berkualitas, lokasi strategis, DP ringan, dan cicilan mudah.')">
     <meta name="keywords" content="@yield('meta_keywords', 'perumahan brebes, perumahan subsidi brebes, rumah murah brebes, rumah dijual tegal, perumahan tegal, developer properti brebes, KPR rumah subsidi')">
     <meta name="author" content="Sulthan Property">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     
     {{-- Canonical URL --}}
     <link rel="canonical" href="{{ url()->current() }}">

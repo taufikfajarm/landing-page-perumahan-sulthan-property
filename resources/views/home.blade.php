@@ -1,10 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Sulthan Property - Perumahan Murah & Subsidi di Brebes')
-@section('meta_description', 'Developer perumahan terpercaya di Brebes & Tegal. Menyediakan rumah subsidi & komersil berkualitas, lokasi strategis, DP ringan, dan cicilan mudah.')
-@section('meta_keywords', 'perumahan subsidi, rumah murah, perumahan elit, perumahan brebes, developer properti jawa tengah, beli rumah KPR, sulthan property, investasi rumah')
-@section('og_title', 'Sulthan Property - Perumahan Berkualitas')
-@section('og_description', 'Temukan hunian impian Anda bersama Sulthan Property. Kualitas bangunan terbaik, proses KPR mudah, dan lokasi strategis.')
+@section('title', 'Sulthan Property - Perumahan Murah & Subsidi Terpercaya di Brebes')
+@section('meta_description', 'Pusat perumahan murah, rumah subsidi FLPP, dan hunian komersil di Brebes & Tegal. Angsuran flat mulai 1 jutaan/bulan, legalitas SHM & PBG, lokasi strategis bebas banjir.')
+@section('meta_keywords', 'perumahan brebes, perumahan di brebes, rumah subsidi brebes, rumah murah brebes, perumahan tegal, kpr flpp brebes, sulthan property, developer perumahan brebes')
+@section('og_title', 'Sulthan Property - Perumahan Murah & Subsidi di Brebes')
+@section('og_description', 'Pilihan rumah subsidi dan komersil terbaik di Brebes dengan cicilan mulai 1 jutaan, sertifikat SHM resmi, dan lokasi bebas banjir.')
+@section('og_image', asset('images/og-image.jpg'))
+@section('twitter_image', asset('images/og-image.jpg'))
+
+@push('seo')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "WebSite",
+    "name": "Sulthan Property",
+    "alternateName": "Perumahan Brebes Sulthan Property",
+    "url": "{{ url('/') }}"
+}
+</script>
+@endpush
 
 @section('content')
 {{-- Hero Section --}}
