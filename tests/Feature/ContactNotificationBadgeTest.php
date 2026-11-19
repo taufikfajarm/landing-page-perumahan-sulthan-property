@@ -65,5 +65,27 @@ class ContactNotificationBadgeTest extends TestCase
         $this->assertNotNull($contact);
         $this->assertFalse($contact->is_read);
     }
+
+    public function test_contact_form_sends_email_notification_to_admin(): void
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+
+        $response = $this->post(route('contact.store'), [
+            'name' => 'Rina Wijaya',
+            'email' => 'rina@example.com',
+            'phone' => '081234567888',
+            'message' => 'Tolong kirimkan pricelist terbaru Almaz de Mansion',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        \Illuminate\Support\Facades\Mail::assertSent(\App\Mail\NewContactNotificationMail::class, function ($mail) {
+            return $mail->hasTo('taufikfajar093@gmail.com') &&
+                   $mail->contact->name === 'Rina Wijaya' &&
+                   $mail->contact->phone === '081234567888' &&
+                   $mail->contact->email === 'rina@example.com' &&
+                   str_contains($mail->contact->message, 'Tolong kirimkan pricelist');
+        });
+    }
 }
 

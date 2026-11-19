@@ -75,7 +75,17 @@ class ContactController extends Controller
             $validated['message'] = 'Permintaan E-Brosur dan informasi perumahan Sulthan Property.';
         }
 
-        Contact::create($validated);
+        $contact = Contact::create($validated);
+
+        // Kirim notifikasi realtime ke email administrator
+        try {
+            $recipientEmail = config('mail.notification_recipient', env('CONTACT_NOTIFICATION_EMAIL', 'taufikfajar093@gmail.com'));
+            if (! empty($recipientEmail)) {
+                \Illuminate\Support\Facades\Mail::to($recipientEmail)->send(new \App\Mail\NewContactNotificationMail($contact));
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Gagal mengirim notifikasi email kontak baru: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'Terima kasih! Pesan Anda telah terkirim.');
     }

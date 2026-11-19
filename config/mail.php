@@ -16,6 +16,8 @@ return [
 
     'default' => env('MAIL_MAILER', 'log'),
 
+    'notification_recipient' => env('CONTACT_NOTIFICATION_EMAIL', 'taufikfajar093@gmail.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Mailer Configurations
